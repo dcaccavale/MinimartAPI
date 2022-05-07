@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Interfaces
 {
-    internal interface IDiscount
+    public interface IDiscount
     {
-        decimal CalculateDiscount();
+         double CalculateDiscount(ItemProduct addProductCart);
     }
     
 }

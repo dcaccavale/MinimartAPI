@@ -8,9 +8,8 @@ namespace Entities
 {
     public class Cart: Entity
     {
-        public IList<AddProductCart>? ProductsAdd { get; set; }
+        public IList<ItemProduct>? ProductsAdd { get; set; }
         public string? Client { get; set; }
 
-        
     }
 }

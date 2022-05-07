@@ -19,6 +19,8 @@ namespace Entities
         }
         public RangeDate(DateTime dateFrom, DateTime dateTo)
         {
+            if( dateTo < dateFrom)
+                    throw new ArgumentOutOfRangeException();
             DateTo = dateTo;
             DateFrom = dateFrom;
         }
@@ -29,7 +31,8 @@ namespace Entities
         /// <returns></returns>
         public bool DateInRange(DateTime dateNow)
         { 
-                return DateFrom <= dateNow && DateTo <= dateNow;
+
+                return DateFrom <= dateNow && DateTo >= dateNow;
         }
 
     }
