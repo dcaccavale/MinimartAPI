@@ -1,6 +1,7 @@
 ﻿using Entities.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Entities
     /// <summary>
     /// A promotional code is a code offered by stores to customers who can use it to receive a discounted price when buying products.
     /// </summary>
-    public abstract class  Voucher :Entity
+    public class  Voucher :Entity
     {
         /// <summary>
         /// Date range to apply a voucher
@@ -19,16 +20,18 @@ namespace Entities
         /// <summary>
         /// Day of week to apply a voucher
         /// </summary>
+         [NotMapped]
         public DayOfWeek[] DayOfWeek { get; set; }
 
         /// <summary>
         /// Code to us a voucher 
         /// </summary>
         public string Code { get; set; }
-  
+
         /// <summary>
         /// Date range to apply a voucher
         /// </summary>
+        [NotMapped] 
         public IDiscount Discount { get; set; }
 
         /// <summary>

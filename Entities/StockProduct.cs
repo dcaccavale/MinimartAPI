@@ -4,6 +4,7 @@
     {
         public Store Store { get; set; }
         public Product Product { get; set; }
-        public int Amount { get; set; }
+        public int Amoun { get; set; }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DataAccess.Interfaces;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
@@ -14,6 +15,11 @@ namespace DataAccess.Repositories
         public Task<IEnumerable<Store>> GetAllAsync()
         {
             return  base.GetAllAsync<Store>();
+        }
+
+        public Task<IEnumerable<Store>> GetAllAsync(Expression<Func<Store, bool>> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<Store> GetAsync(Guid Id)

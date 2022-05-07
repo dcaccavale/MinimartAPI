@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Repositories
+﻿namespace DataAccess.Interfaces
 {
     public  interface ICartRepository
     {

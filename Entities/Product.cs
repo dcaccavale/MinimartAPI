@@ -3,9 +3,9 @@
     public class Product : Entity
     {
 
-        public string name  { get; set; }
-        public string description  { get; set; }
-        public double price { get; set; }
-        public Category category { get; set; }
+        public string Name  { get; set; }
+        public string Description  { get; set; }
+        public double Price { get; set; }
+        public Category Category { get; set; }
     }
 }

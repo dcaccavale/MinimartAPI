@@ -1,6 +1,7 @@
 using AutoMapper;
 using Core;
 using Core.Interfaces;
+using Core.Services;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
@@ -32,12 +33,13 @@ namespace Minimart_API
             services.AddControllers();
             services.AddDbContext<MinimarketDataContext>(options => options.UseSqlServer("Data Source=LAPTOP-L7FH2BKE\\SQLDARIO;Initial Catalog=Minimart;User Id=sa; Password=dario1234"));
 
+            ///Configure Ioc Services
+            IoCServices.AddDependency(services);
 
-                         
-            
 
-            services.AddTransient(typeof(IStoreRepository), typeof(StoreRepository));
-            services.AddTransient(typeof(IStoreServices), typeof(StoreServices));
+
+
+
             services.AddAutoMapper(typeof(DomainProfile));
             services.AddLogging();
             services.AddSwaggerGen(c =>

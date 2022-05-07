@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories;
+﻿using DataAccess.Interfaces;
+using DataAccess.Repositories;
 using Entities;
 using Microsoft.Extensions.Logging;
 using System;

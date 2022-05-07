@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Interfaces
 {
-    public  interface IStoreRepository
+    public  interface IStoreRepository : IGenericRepository<Store>
     {
         Task<IEnumerable<Store>> GetAllAsync();
         Task<Store> GetAsync(Guid Id);

@@ -5,6 +5,6 @@
     /// </summary>
     public class Category : Entity
     {
-        public string description { get; set; }
+        public string Description { get; set; }
     }
 }

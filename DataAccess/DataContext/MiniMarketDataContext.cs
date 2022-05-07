@@ -12,7 +12,7 @@ namespace DataAccess
         {
         }
 
-        public DbSet<ItemProduct> AddProductCart { get; set; }
+        public DbSet<ItemProduct> ItemProduct { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -28,6 +28,12 @@ namespace DataAccess
            
 
             //optionsBuilder.UseInMemoryDatabase("Test_DB");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Voucher>()
+               .HasDiscriminator()
+                .IsComplete(false);
         }
     }
 

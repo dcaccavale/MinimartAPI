@@ -6,7 +6,7 @@ using DataAccess.Repositories;
 using Entities;
 using Microsoft.Extensions.Logging;
 
-namespace Core
+namespace Core.Services
 {
     public class StoreServices : IStoreServices
     {
