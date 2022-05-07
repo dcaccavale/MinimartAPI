@@ -6,6 +6,7 @@ namespace DataAccess.Interfaces
     {
         Task<StockProduct?> GetByStoreAndProduct(Guid productID, Guid storeId);
         Task<IEnumerable<StockProduct>> GetAllAsync();
-        Task<IEnumerable<StockProduct>> GetAllAblyAsync();
+        Task<IEnumerable<StockProduct>> GetAllAvailableAsync();
+        Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId);
     }
 }

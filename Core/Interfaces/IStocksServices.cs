@@ -4,7 +4,9 @@ namespace Core.Interfaces
 {
     public interface IStocksServices
     {
-        IEnumerable<StocksResponse> GetAllAbly();
+        IEnumerable<StocksResponse> GetAllAvailable();
         StocksResponse? GetByPrductAndStore(Guid productID, Guid storeId);
+
+        IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId);
     }
 }

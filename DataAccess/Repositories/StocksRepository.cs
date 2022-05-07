@@ -16,15 +16,20 @@ namespace DataAccess.Repositories
 
 
 
-        public Task<IEnumerable<StockProduct>> GetAllAblyAsync()
+        public Task<IEnumerable<StockProduct>> GetAllAvailableAsync()
         {
             return base.GetAllAsync<StockProduct>(p => p.Amoun > 0);
- 
         }
 
         public Task<IEnumerable<StockProduct>> GetAllAsync()
         {
            return base.GetAllAsync<StockProduct>();
+        }
+
+        public async Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId)
+        {
+            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId).Include(p => p.Product.Category).ToListAsync();
+          
         }
 
         public Task<StockProduct?> GetAsync(Guid Id)

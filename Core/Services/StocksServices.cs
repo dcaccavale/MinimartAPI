@@ -25,22 +25,39 @@ namespace Core.Services
             _mapper = mapper;
 
         }
-
-  
-
-        public IEnumerable<StocksResponse> GetAllAbly()
+        /// <summary>
+        /// Convert a StockProduct To StockResponse
+        /// </summary>
+        /// <param name="listProductStock"></param>
+        /// <returns></returns>
+        private static List<StocksResponse> ToStockResponse(IEnumerable<Entities.StockProduct> listProductStock)
         {
-           var listProductStock = _stockRepository.GetAllAsync().Result;
-           var  group=  listProductStock.GroupBy(
-                p => p.Product,
-                p => p.Amoun,
-                (key, g) => new { Product = key, Amoun = g.ToList().Sum()});
+            var group = listProductStock.GroupBy(
+                 p => p.Product,
+                 p => p.Amoun,
+                 (key, g) => new { Product = key, Amoun = g.ToList().Sum() });
             var stockResponseList = new List<StocksResponse>();
-             group.ToList().ForEach(p=> stockResponseList.Add(new StocksResponse() { ProductName= p.Product.Name, Count = p.Amoun, ProductId= p.Product.Id, ProductCategory = p.Product.Category.Description }));
+            group.ToList().ForEach(p => stockResponseList.Add(new StocksResponse() { ProductName = p.Product.Name, Count = p.Amoun, ProductId = p.Product.Id, ProductCategory = p.Product.Category.Description }));
             return stockResponseList;
         }
 
-    
+        /// <summary>
+        /// return all available products
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StocksResponse> GetAllAvailable()
+        {
+            var listProductStock = _stockRepository.GetAllAsync().Result;
+            List<StocksResponse> stockResponseList = ToStockResponse(listProductStock); 
+            return stockResponseList;
+        }
+
+        public IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId)
+        {
+            var listProductStock = _stockRepository.GetAllAvailableByStore(storeId).Result;
+            List<StocksResponse> stockResponseList = ToStockResponse(listProductStock);
+            return stockResponseList;
+        }
 
         public StocksResponse? GetByPrductAndStore(Guid productID, Guid storeId)
         {

@@ -21,14 +21,21 @@ namespace Minimart_API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<StocksResponse> GetAllAbly()
+        public IEnumerable<StocksResponse> GetAllAvailable()
         {
-            return _stockServices.GetAllAbly();
+            return _stockServices.GetAllAvailable();
         }
-        [HttpGet("{productId, storedId}")]
+        [HttpGet("/store/{storedId}/product/{productId}")]
         public StocksResponse GetByPrductAndStore(Guid productID , Guid storeId)
         {
             return _stockServices.GetByPrductAndStore(productID, storeId);
         }
+
+        [HttpGet("/store/{storedId}")]
+        public IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId)
+        {
+            return _stockServices.GetAllAvailableByStore(storeId);
+        }
+        
     }
 }

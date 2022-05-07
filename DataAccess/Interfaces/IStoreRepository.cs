@@ -10,6 +10,6 @@ namespace DataAccess.Interfaces
     public  interface IStoreRepository : IGenericRepository<Store>
     {
         Task<IEnumerable<Store>> GetAllAsync();
-        Task<Store> GetAsync(Guid Id);
+     
     }
 }
