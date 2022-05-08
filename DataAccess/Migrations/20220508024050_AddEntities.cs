@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class AddEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Client = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Client = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,9 +50,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    workdays = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    hours = table.Column<int>(type: "int", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,17 +62,17 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    price = table.Column<double>(type: "float", nullable: false),
-                    categoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_categoryId",
-                        column: x => x.categoryId,
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -85,45 +83,64 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    rangeDateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    dayOfWeek = table.Column<int>(type: "int", nullable: false),
-                    code = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    RangeDateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vouchers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vouchers_RangeDate_rangeDateId",
-                        column: x => x.rangeDateId,
+                        name: "FK_Vouchers_RangeDate_RangeDateId",
+                        column: x => x.RangeDateId,
                         principalTable: "RangeDate",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AddProductCart",
+                name: "DailyTimeRange",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    priceUnit = table.Column<double>(type: "float", nullable: false),
-                    productId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HourFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HourTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DayOfWeek = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyTimeRange", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailyTimeRange_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemProduct",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PriceUnit = table.Column<double>(type: "float", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AddProductCart", x => x.Id);
+                    table.PrimaryKey("PK_ItemProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AddProductCart_Carts_CartId",
+                        name: "FK_ItemProduct_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_AddProductCart_Products_productId",
-                        column: x => x.productId,
+                        name: "FK_ItemProduct_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -131,62 +148,70 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    storeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    productId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    amount = table.Column<int>(type: "int", nullable: false)
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amoun = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StockProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockProducts_Products_productId",
-                        column: x => x.productId,
+                        name: "FK_StockProducts_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StockProducts_Stores_storeId",
-                        column: x => x.storeId,
+                        name: "FK_StockProducts_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AddProductCart_CartId",
-                table: "AddProductCart",
+                name: "IX_DailyTimeRange_StoreId",
+                table: "DailyTimeRange",
+                column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemProduct_CartId",
+                table: "ItemProduct",
                 column: "CartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AddProductCart_productId",
-                table: "AddProductCart",
-                column: "productId");
+                name: "IX_ItemProduct_ProductId",
+                table: "ItemProduct",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_categoryId",
+                name: "IX_Products_CategoryId",
                 table: "Products",
-                column: "categoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockProducts_productId",
+                name: "IX_StockProducts_ProductId",
                 table: "StockProducts",
-                column: "productId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockProducts_storeId",
+                name: "IX_StockProducts_StoreId",
                 table: "StockProducts",
-                column: "storeId");
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vouchers_rangeDateId",
+                name: "IX_Vouchers_RangeDateId",
                 table: "Vouchers",
-                column: "rangeDateId");
+                column: "RangeDateId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AddProductCart");
+                name: "DailyTimeRange");
+
+            migrationBuilder.DropTable(
+                name: "ItemProduct");
 
             migrationBuilder.DropTable(
                 name: "StockProducts");

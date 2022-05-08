@@ -11,10 +11,10 @@ namespace DataAccess
             : base(options)
         {
         }
-
-        public DbSet<ItemProduct> ItemProduct { get; set; }
+        public DbSet<DailyTimeRange> DailyTimeRange { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ItemProduct> ItemProduct { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<RangeDate> RangeDate { get; set; }
         public DbSet<StockProduct> StockProducts { get; set; }

@@ -40,9 +40,9 @@ namespace DataAccess
         }
         public static void Seed(MinimarketDataContext _context)
         {
-            Store cocoD = new Store { Name = "COCO Downtown", Address = "", Hours = 8, Workdays = "" };
-            Store cocoB = new Store { Name = "COCO Bay", Address = "", Hours = 8, Workdays = "" };
-            Store cocoM = new Store { Name = "COCO Mall", Address = "", Hours = 8, Workdays = "" };
+            Store cocoD = new Store { Name = "COCO Downtown", Address = "" };
+            Store cocoB = new Store { Name = "COCO Bay", Address = "" };
+            Store cocoM = new Store { Name = "COCO Mall", Address = ""};
 
 
             _context.Stores.AddRange(cocoD,cocoB, cocoM );

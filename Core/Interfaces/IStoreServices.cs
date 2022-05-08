@@ -12,5 +12,7 @@ namespace Core.Interfaces
     {
         Task<IEnumerable<StoreResponse>> GetAllAsync();
         Task<StoreResponse> GetAsync(Guid Id);
+
+        Task<IEnumerable<StoreResponse>> GetAllAvailable(DateTime dateTime);
     }
 }

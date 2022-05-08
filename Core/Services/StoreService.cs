@@ -22,7 +22,7 @@ namespace Core.Services
             _mapper = mapper;
         
         }
-        public virtual async Task<IEnumerable<StoreResponse>> GetAllAsync()
+        public async Task<IEnumerable<StoreResponse>> GetAllAsync()
         {
             _logger.Log(LogLevel.Information, "Esta obteniendo todos las entidades.");
              var result = await _storeRepository.GetAllAsync();
@@ -31,6 +31,13 @@ namespace Core.Services
            
              return _mapper.Map<List<StoreResponse>>(result);
               
+        }
+
+        public Task<IEnumerable<StoreResponse>> GetAllAvailable(DateTime dateTime)
+        {
+            _logger.Log(LogLevel.Information, "");
+            var result =  _storeRepository.GetAllAvailable(dateTime);
+            throw new NotImplementedException();
         }
 
         public virtual async Task<StoreResponse> GetAsync(Guid Id)

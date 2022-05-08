@@ -10,6 +10,8 @@ namespace DataAccess.Interfaces
     public  interface IStoreRepository : IGenericRepository<Store>
     {
         Task<IEnumerable<Store>> GetAllAsync();
-     
+        Task<IEnumerable<Store>> GetAllAvailable(DateTime dateTime);
+
+
     }
 }

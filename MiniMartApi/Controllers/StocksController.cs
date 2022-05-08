@@ -19,18 +19,32 @@ namespace Minimart_API.Controllers
         {
             _stockServices = stockServices;
         }
-
+        /// <summary>
+        /// Be able to query all available products, across stores, with their total stock
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<StocksResponse> GetAllAvailable()
         {
             return _stockServices.GetAllAvailable();
         }
-        [HttpGet("/store/{storedId}/product/{productId}")]
+
+        /// <summary>
+        /// Be able to query available products for a particular store
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        [HttpGet("{storedId,productId}")]
         public StocksResponse GetByPrductAndStore(Guid productID , Guid storeId)
         {
             return _stockServices.GetByPrductAndStore(productID, storeId);
         }
-
+        /// <summary>
+        ///  Be able to query available products for a particular store
+        /// </summary>
+        /// <param name="storeId">Store Id</param>
+        /// <returns></returns>
         [HttpGet("/store/{storedId}")]
         public IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId)
         {

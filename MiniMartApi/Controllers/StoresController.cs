@@ -26,6 +26,12 @@ namespace Minimart_API.Controllers
           return _storeServices.GetAllAsync();
         }
 
+        [HttpGet("/available/{dateTime}")]
+        public Task<IEnumerable<StoreResponse>> GetAllAvailable(DateTime dateTime)
+        {
+            return _storeServices.GetAllAvailable(dateTime);
+        }
+
         // GET api/<StoresController>/5
         [HttpGet("{id}")]
         public Task<StoreResponse> Get(Guid id)

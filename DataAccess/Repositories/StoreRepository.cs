@@ -22,6 +22,11 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<Store>> GetAllAvailable(DateTime dateTime)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Store> GetAsync(Guid Id)
         {
             return base.GetAsync<Store>(Id);

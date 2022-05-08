@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MinimarketDataContext))]
-    [Migration("20220507045655_InitialVoucher")]
-    partial class InitialVoucher
+    [Migration("20220508024050_AddEntities")]
+    partial class AddEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,13 +44,39 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Entities.DailyTimeRange", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HourFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("HourTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("DailyTimeRange");
                 });
 
             modelBuilder.Entity("Entities.ItemProduct", b =>
@@ -65,7 +91,7 @@ namespace DataAccess.Migrations
                     b.Property<double>("PriceUnit")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -77,7 +103,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("AddProductCart");
+                    b.ToTable("ItemProduct");
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
@@ -86,23 +112,23 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("categoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("price")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("categoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -149,17 +175,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Hours")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Workdays")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -194,6 +212,13 @@ namespace DataAccess.Migrations
                     b.HasDiscriminator<string>("Discriminator").IsComplete(false);
                 });
 
+            modelBuilder.Entity("Entities.DailyTimeRange", b =>
+                {
+                    b.HasOne("Entities.Store", null)
+                        .WithMany("DailyTimeRange")
+                        .HasForeignKey("StoreId");
+                });
+
             modelBuilder.Entity("Entities.ItemProduct", b =>
                 {
                     b.HasOne("Entities.Cart", null)
@@ -202,22 +227,20 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
                 {
-                    b.HasOne("Entities.Category", "category")
+                    b.HasOne("Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("categoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("category");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Entities.StockProduct", b =>
@@ -253,6 +276,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Cart", b =>
                 {
                     b.Navigation("ProductsAdd");
+                });
+
+            modelBuilder.Entity("Entities.Store", b =>
+                {
+                    b.Navigation("DailyTimeRange");
                 });
 #pragma warning restore 612, 618
         }
