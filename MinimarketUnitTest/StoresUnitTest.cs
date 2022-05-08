@@ -24,14 +24,15 @@ namespace MinimarketUnitTest
             Store store = new Store()
             {
                 DailyTimeRange = new List<DailyTimeRange>() {
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) }
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new  TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom =new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) }
 
-            }};
-            /// 0001/1/1 10:00 "Monday" is open
-            Assert.True(store.IsOpen(new DateTime().AddHours(10)));
+            }
+            };
+            /// 10:00 "Monday" is open
+            Assert.True(store.IsOpen(new TimeSpan(10, 0, 0), DayOfWeek.Monday));
         }
         /// <summary>
         /// the store is closed at the set time
@@ -43,16 +44,16 @@ namespace MinimarketUnitTest
             Store store = new Store()
             {
                 DailyTimeRange = new List<DailyTimeRange>() {
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) }
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) }
 
             }
             };
-            /// 0001/1/1  "Monday"
-            Assert.False(store.IsOpen(new DateTime().AddHours(23)));
-        }
+                /// 20:30 "Monday" is open
+                Assert.False(store.IsOpen(new TimeSpan(20, 30, 0), DayOfWeek.Monday));
+            }
 
         /// <summary>
         /// Store don´t open this day
@@ -64,15 +65,16 @@ namespace MinimarketUnitTest
             Store store = new Store()
             {
                 DailyTimeRange = new List<DailyTimeRange>() {
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new DateTime().AddHours(8), HourTo = new DateTime().AddHours(20) }
+                new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+                new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+                new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
 
             }
             };
-            /// 0001/1/1  "Monday"
-            Assert.False(store.IsOpen(new DateTime().AddHours(10)));
-        }
+                /// 18:30 "Friday" is closed
+                Assert.False(store.IsOpen(new TimeSpan(18, 30, 0), DayOfWeek.Friday));
 
-    }
+            }
+
+        }
 }

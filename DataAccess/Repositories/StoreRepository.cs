@@ -22,9 +22,9 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Store>> GetAllAvailable(DateTime dateTime)
+        public IEnumerable<Store> GetAllAvailable(DayOfWeek dayOfWeek , TimeSpan time)
         {
-            throw new NotImplementedException();
+            return  base.GetAllAsync<Store>().Result.Where(s => s.IsOpen(time, dayOfWeek));
         }
 
         public Task<Store> GetAsync(Guid Id)

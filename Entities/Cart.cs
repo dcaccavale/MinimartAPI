@@ -9,7 +9,7 @@ namespace Entities
     public class Cart: Entity
     {
         public IList<ItemProduct>? ProductsAdd { get; set; }
-        public string? Client { get; set; }
-
+        public Customer Client { get; set; }
+        public Store Store { get; set; }    
     }
 }

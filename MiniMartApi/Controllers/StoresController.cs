@@ -26,10 +26,11 @@ namespace Minimart_API.Controllers
           return _storeServices.GetAllAsync();
         }
 
-        [HttpGet("/available/{dateTime}")]
-        public Task<IEnumerable<StoreResponse>> GetAllAvailable(DateTime dateTime)
+        [HttpGet("/available/{dayOfWeek,hour,minute}")]
+        public IEnumerable<StoreResponse> GetAllAvailable(string dayOfWeek, byte hour, byte minutes)
         {
-            return _storeServices.GetAllAvailable(dateTime);
+            var day = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayOfWeek);
+            return _storeServices.GetAllAvailable(day, new TimeSpan( hour, minutes,0)); 
         }
 
         // GET api/<StoresController>/5

@@ -33,12 +33,17 @@ namespace Core.Services
               
         }
 
-        public Task<IEnumerable<StoreResponse>> GetAllAvailable(DateTime dateTime)
+        public  IEnumerable<StoreResponse> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan  time)
         {
             _logger.Log(LogLevel.Information, "");
-            var result =  _storeRepository.GetAllAvailable(dateTime);
-            throw new NotImplementedException();
+            var listStores =  _storeRepository.GetAllAvailable(dayOfWeek, time);
+            ICollection<StoreResponse> result = new List<StoreResponse>();
+            listStores.ToList().ForEach(s=> result.Add(new StoreResponse() {Name= s.Name })
+                );
+            return  result.AsEnumerable<StoreResponse>();
         }
+
+     
 
         public virtual async Task<StoreResponse> GetAsync(Guid Id)
         {

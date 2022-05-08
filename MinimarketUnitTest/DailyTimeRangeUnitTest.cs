@@ -22,7 +22,7 @@ namespace MinimarketUnitTest
         public void CtorFailureDailyTimeRange_Throws()
         {
             DailyTimeRange rangeDate = new();
-            Assert.Throws<ArgumentOutOfRangeException>(() => new DailyTimeRange(new DateTime().AddHours(8), new DateTime().AddHours(4), DayOfWeek.Friday));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new DailyTimeRange(new TimeSpan(8,0,0), new TimeSpan(4,0,0), DayOfWeek.Friday));
 
         }
 
@@ -35,16 +35,14 @@ namespace MinimarketUnitTest
         [Test]
         public void DailyTimeRange_IntervalIn()
         {
-            DateTime dateTime = new DateTime().AddHours(9);
-
-            DateTime auxDatetime = new DateTime().AddHours(8);
+            TimeSpan time = new TimeSpan(9, 0, 0);
             DailyTimeRange dailyTimeRange = new DailyTimeRange()
             {
-                DayOfWeek = dateTime.DayOfWeek.ToString(),
-                HourFrom = auxDatetime,
-                HourTo = auxDatetime.AddHours(12)
+                DayOfWeek = DayOfWeek.Monday.ToString(),
+                HourFrom = new TimeSpan(8, 0, 0),
+                HourTo = new TimeSpan(22,0,0)
             };
-            Assert.True(dailyTimeRange.HourInRange(dateTime));
+            Assert.True(dailyTimeRange.HourInRange(DayOfWeek.Monday, time));
         }
         /// <summary>
         /// 
@@ -53,37 +51,33 @@ namespace MinimarketUnitTest
         [Test]
         public void DailyTimeRange_WhioutInterval()
         {
-            DateTime dateTime = new DateTime().AddHours(6);//6:00
-
-            DateTime auxDatetime = new DateTime().AddHours(8); //8:00
+            TimeSpan time = new TimeSpan(22, 30, 0);
             DailyTimeRange dailyTimeRange = new DailyTimeRange()
             {
-                DayOfWeek =dateTime.DayOfWeek.ToString(),
-                HourFrom = auxDatetime,
-                HourTo = auxDatetime.AddHours(12) //20:00
+                DayOfWeek = DayOfWeek.Monday.ToString(),
+                HourFrom = new TimeSpan(8, 0, 0),
+                HourTo = new TimeSpan(22, 0, 0)
             };
-            Assert.False(dailyTimeRange.HourInRange(dateTime));
-
+            Assert.False(dailyTimeRange.HourInRange(DayOfWeek.Monday, time));
 
         }
 
         /// <summary>
-        /// Diferent day of week ,  0001/1/1  "Monday"
+        /// Diferent day of week   
         /// </summary>
         ///
         [Test]
         public void DailyTimeRange_WhioutDayofWeek()
         {
-            DateTime dateTime = new DateTime().AddHours(10);//10:00
-
-            DateTime auxDatetime = new DateTime().AddHours(8); //8:00
+            TimeSpan time = new TimeSpan(19, 30, 0);
             DailyTimeRange dailyTimeRange = new DailyTimeRange()
             {
-                DayOfWeek = DayOfWeek.Wednesday.ToString(),
-                HourFrom = auxDatetime,
-                HourTo = auxDatetime.AddHours(12) //20:00
+                DayOfWeek = DayOfWeek.Monday.ToString(),
+                HourFrom = new TimeSpan(8, 0, 0),
+                HourTo = new TimeSpan(22, 0, 0)
             };
-            Assert.False(dailyTimeRange.HourInRange(dateTime));
+            Assert.False(dailyTimeRange.HourInRange(DayOfWeek.Tuesday, time));
+
 
 
         }

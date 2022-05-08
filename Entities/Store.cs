@@ -7,11 +7,11 @@
         public string? Address { get; set; }
         // public byte[] logo { get; set; }
 
-        public bool IsOpen(DateTime dateTime)
+        public bool IsOpen(TimeSpan time, DayOfWeek dayOfWeek)
         {
             if (DailyTimeRange == null) return false;
-            DailyTimeRange? hoursOpen = DailyTimeRange.FirstOrDefault(p => p.DayOfWeek == dateTime.DayOfWeek.ToString());
-            return hoursOpen != null && hoursOpen.HourInRange(dateTime);
+            return DailyTimeRange.Any(p => p.HourInRange(dayOfWeek, time));
+            
             
         }
       

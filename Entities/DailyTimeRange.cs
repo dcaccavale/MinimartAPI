@@ -6,11 +6,11 @@
         /// <summary>
         /// Represents one hour from,  year 1 mouth 1 day 1 
         /// </summary>
-        public DateTime HourFrom { get; set; }
+        public TimeSpan HourFrom { get; set; }
         /// <summary>
         /// Represents one hour To ,  year 1 mouth 1 day 1 
         /// </summary>
-        public DateTime HourTo { get; set; }
+        public TimeSpan HourTo { get; set; }
         /// <summary>
         /// Represents one Day of week ,  year 1 mouth 1 day 1 
         /// </summary>
@@ -26,18 +26,17 @@
         /// <param name="hourTo">Use it only to save the time to</param>
         /// <param name="dayOfWeek"></param>
         /// <exception cref="ArgumentException"></exception>
-        public DailyTimeRange(DateTime hourFrom , DateTime hourTo,DayOfWeek dayOfWeek)
+        public DailyTimeRange(TimeSpan hourFrom , TimeSpan hourTo,DayOfWeek dayOfWeek)
         {
             if (hourTo < hourFrom) throw new ArgumentOutOfRangeException("Invalid parameter, hour from greater than hour to");
             DayOfWeek = dayOfWeek.ToString();
             HourFrom = hourFrom;
             HourTo = hourTo;
         }
-        public  bool HourInRange(DateTime dateTime)
+        public  bool HourInRange(DayOfWeek dayOfWeek , TimeSpan time)
         {
-            DateTime auxDatetime = new DateTime().AddHours(dateTime.Hour).AddMinutes(dateTime.Minute);
-            return dateTime.DayOfWeek.ToString() == DayOfWeek
-               && HourFrom <= auxDatetime && HourTo > auxDatetime;
+             return dayOfWeek.ToString() == DayOfWeek
+               && HourFrom <= time && HourTo > time;
 
         }
     }

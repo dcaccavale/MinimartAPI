@@ -11,8 +11,7 @@ namespace Entities
         public int Quantity { get; set; }
         public double PriceUnit { get; set; }
         public Product? Product { get; set; }
-
-
+        public double TotalDiscount { get; set; }
 
     }
 }
