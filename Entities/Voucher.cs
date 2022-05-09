@@ -20,8 +20,8 @@ namespace Entities
         /// <summary>
         /// Day of week to apply a voucher
         /// </summary>
-         [NotMapped]
-        public DayOfWeek[] DayOfWeek { get; set; }
+
+        public string DaysOfWeek { get; set; }
 
         /// <summary>
         /// Code to us a voucher 
@@ -33,16 +33,21 @@ namespace Entities
         /// </summary>
         [NotMapped] 
         public IDiscount Discount { get; set; }
+        /// <summary>
+        /// Store to apply voucher
+        /// </summary>
+        public Store Store { get; set; }
 
         /// <summary>
         /// Validate a voucher in a range of dates and day of the week
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
+        /// 
         public bool validate(DateTime date) {
 
             //dayOfWeek.Length == 0 applies every day of the week
-            return RangeDate.DateInRange(date) && ( DayOfWeek.Length == 0 || DayOfWeek.Contains(date.DayOfWeek));
+            return RangeDate.DateInRange(date) && ( DaysOfWeek.Length == 0 || date.DayOfWeek.ToString().Contains(DaysOfWeek));
       
         }
 

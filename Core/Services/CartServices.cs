@@ -10,6 +10,12 @@ namespace Core.Services
         private readonly ICartRepository _cartRepository;
         private readonly IStockRepository _stockRepository;
         private readonly IItemProductRepository _itemProductRepository;
+        public CartServices(ICartRepository cartRepository, IStockRepository stockRepository, IItemProductRepository itemProductRepository)
+        {
+            _cartRepository = cartRepository;
+            _stockRepository = stockRepository;
+            _itemProductRepository = itemProductRepository;
+        }
         /// <summary>
         /// Add an item to cart if stock is available
         /// </summary>
