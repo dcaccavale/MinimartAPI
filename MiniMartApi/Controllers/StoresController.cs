@@ -20,18 +20,33 @@ namespace Minimart_API.Controllers
         {
             _storeServices = storeServices;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public Task<IEnumerable<StoreResponse>> Get()
         {
+            
           return _storeServices.GetAllAsync();
         }
 
         [HttpGet("/available/{dayOfWeek,hour,minute}")]
-        public IEnumerable<StoreResponse> GetAllAvailable(string dayOfWeek, byte hour, byte minutes)
+        public Task<IEnumerable<StoreResponse>> GetAllAvailable(string dayOfWeek, byte hour, byte minutes)
         {
-            var day = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayOfWeek);
-            return _storeServices.GetAllAvailable(day, new TimeSpan( hour, minutes,0)); 
+            object value;
+            Enum.TryParse(typeof(DayOfWeek), dayOfWeek,out value);
+            if (value == null)
+            { 
+                this.Response.StatusCode = 400;
+          
+            }
+            return _storeServices.GetAllAvailable((DayOfWeek)value, new TimeSpan( hour, minutes,0)); 
         }
+
+
+      
 
         // GET api/<StoresController>/5
         [HttpGet("{id}")]
@@ -40,22 +55,22 @@ namespace Minimart_API.Controllers
             return _storeServices.GetAsync(id);
         }
 
-        // POST api/<StoresController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        //// POST api/<StoresController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-        // PUT api/<StoresController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<StoresController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<StoresController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<StoresController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

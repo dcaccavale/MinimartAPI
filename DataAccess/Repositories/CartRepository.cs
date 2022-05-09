@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    internal class CartRepository : GenericRepository, ICartRepository
+    public  class CartRepository : GenericRepository, ICartRepository
     {
         public CartRepository(MinimarketDataContext dataContext) : base(dataContext)
         {

@@ -7,6 +7,6 @@ namespace Core.Interfaces
         IEnumerable<StocksResponse> GetAllAvailable();
         StocksResponse? GetByPrductAndStore(Guid productID, Guid storeId);
 
-        IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId);
+        Task<IEnumerable<StocksResponse>> GetAllAvailableByStore(Guid storeId);
     }
 }

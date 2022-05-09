@@ -8,6 +8,7 @@ namespace Entities
 {
     public  class ItemProduct:Entity
     {
+        public Cart Cart { get; set; }
         public int Quantity { get; set; }
         public double PriceUnit { get; set; }
         public Product? Product { get; set; }

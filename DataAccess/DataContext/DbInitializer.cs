@@ -14,7 +14,7 @@ namespace DataAccess
             using (var _context = new MinimarketDataContext(serviceProvider.GetRequiredService<DbContextOptions<MinimarketDataContext>>()))
             {
                 // Agregando  a la BD
-              //  DeleteDataBase(_context);
+                DeleteDataBase(_context);
                 Seed(_context);
                 if (_context.Stores.Any())
                 {
@@ -40,12 +40,25 @@ namespace DataAccess
         }
         public static void Seed(MinimarketDataContext _context)
         {
-            Store cocoD = new Store { Name = "COCO Downtown", Address = "" };
-            Store cocoB = new Store { Name = "COCO Bay", Address = "" };
-            Store cocoM = new Store { Name = "COCO Mall", Address = ""};
+            Store cocoD = new Store { Name = "COCO Downtown", Address = "Altovolta 2595" };
+            Store cocoB = new Store { Name = "COCO Bay", Address = "Mac Fly 1985" };
+            Store cocoM = new Store { Name = "COCO Mall", Address = "Artur Hard 15669" };
+            _context.Stores.AddRange(cocoD, cocoB, cocoM);
+            _context.SaveChanges();
+            var  DailyTimeRangeD = GetListDailyTime();
+            var DailyTimeRangeB = GetListDailyTime();
+            var DailyTimeRangeM = GetListDailyTime();
+
+            _context.DailyTimeRange.AddRange(DailyTimeRangeD);
+            _context.DailyTimeRange.AddRange(DailyTimeRangeB);
+            _context.DailyTimeRange.AddRange(DailyTimeRangeM);
+            cocoD.DailyTimeRange = DailyTimeRangeD;
+            cocoB.DailyTimeRange = DailyTimeRangeB;
+            cocoM.DailyTimeRange = DailyTimeRangeM;
+
+            _context.SaveChanges();
 
 
-            _context.Stores.AddRange(cocoD,cocoB, cocoM );
 
             Category CategorySoda = new() { Description = "Soda" };
             Category CategoryFood = new() { Description = "Food" };
@@ -53,16 +66,16 @@ namespace DataAccess
             Category CategoryBathroom = new() { Description = "Bathroom" };
 
             _context.Categories.AddRange(CategorySoda, CategoryFood, CategoryCleaning, CategoryBathroom);
-              _context.Products.AddRange(
-                new Product { Name = "Cold Ice Tea", Description = "", Price = 2.5, Category = CategorySoda },
-                new Product { Name = "Coffee flavoured milk", Description = "", Price = 5.3, Category = CategorySoda },
-                new Product { Name = "Nuke-Cola", Description = "", Price = 2.1, Category = CategorySoda },
-                new Product { Name = "Sprute", Description = "", Price = 4, Category = CategorySoda },
-                new Product { Name = "Slurm", Description = "", Price = 3.25, Category = CategorySoda },
-                new Product { Name = "Diet Slurm", Description = "", Price = 3, Category = CategorySoda }
-                );
-         
-           
+            _context.Products.AddRange(
+              new Product { Name = "Cold Ice Tea", Description = "", Price = 2.5, Category = CategorySoda },
+              new Product { Name = "Coffee flavoured milk", Description = "", Price = 5.3, Category = CategorySoda },
+              new Product { Name = "Nuke-Cola", Description = "", Price = 2.1, Category = CategorySoda },
+              new Product { Name = "Sprute", Description = "", Price = 4, Category = CategorySoda },
+              new Product { Name = "Slurm", Description = "", Price = 3.25, Category = CategorySoda },
+              new Product { Name = "Diet Slurm", Description = "", Price = 3, Category = CategorySoda }
+              );
+
+
             _context.Products.AddRange(
                 new Product { Name = "Salsa Cookies", Description = "", Price = 0.75, Category = CategoryFood },
                 new Product { Name = "Windmill Cookies", Description = "", Price = 1.33, Category = CategoryFood },
@@ -80,7 +93,7 @@ namespace DataAccess
                 new Product { Name = "Sponge, Bob", Description = "", Price = 1, Category = CategoryCleaning },
                 new Product { Name = "Generic mop", Description = "", Price = 1.25, Category = CategoryCleaning }
                     );
-          
+
 
             _context.Products.AddRange(
                 new Product { Name = "Pure steel toilet paper", Description = "", Price = 1.25, Category = CategoryBathroom },
@@ -94,17 +107,37 @@ namespace DataAccess
             var products = _context.Products.ToList();
             stores.ForEach(s =>
             products.ForEach(p =>
-                _context.StockProducts.Add(new StockProduct {Product = p, Store=s, Amoun = rand.Next(0, 101) })
+                _context.StockProducts.Add(new StockProduct { Product = p, Store = s, Amound = rand.Next(0, 101) })
             ));
             _context.SaveChanges();
             var stocks = _context.StockProducts.ToList();
-            var stockCero= stocks.Where(s => s.Store.Name == "COCO Bay" && "Diet Slurm,PANTONE shampoo,Pure steel toilet paper,Generic soap,Cabbagegate toothpaste".Contains(s.Product.Name))
+            var stockCero = stocks.Where(s => s.Store.Name == "COCO Bay" && "Diet Slurm,PANTONE shampoo,Pure steel toilet paper,Generic soap,Cabbagegate toothpaste".Contains(s.Product.Name))
                 .Union(stocks.Where(s => s.Store.Name == "COCO Mall" && "Ravioloches x12,Ravioloches x48,Milanga ganga,Milanga ganga napo,Atlantis detergent,Virulanita, Sponge,Bob,Generic mop".Contains(s.Product.Name)).ToList())
                 .Union(stocks.Where(s => s.Store.Name == "COCO Downtown" && "Sprute,Slurm,Atlantis detergent,Virulanita,Sponge, Bob,Generic mop,Pure steel toilet paper".Contains(s.Product.Name)).ToList())
                  .ToList();
-            stockCero.ForEach(s => s.Amoun = 0);
+            stockCero.ForEach(s => s.Amound = 0);
+
+            Cart cart = new Cart() { 
+            Client = new Customer() { Name="Jhon", Nic="Jhon666" },
+            Store = cocoB 
+            };
+            _context.Add(cart);
             _context.SaveChanges();
         }
-        
+
+        private static List<DailyTimeRange> GetListDailyTime()
+        {
+            ///           
+            /// Configure daily time range 
+            return new List<DailyTimeRange>() {
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Thursday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Friday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) },
+            new DailyTimeRange() { DayOfWeek = DayOfWeek.Saturday.ToString(), HourFrom = new TimeSpan(8, 0, 0), HourTo = new TimeSpan(20, 30, 0) }
+            };
+        }
     }
 }

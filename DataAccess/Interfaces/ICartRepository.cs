@@ -1,6 +1,9 @@
-﻿namespace DataAccess.Interfaces
+﻿using Entities;
+
+namespace DataAccess.Interfaces
 {
-    public  interface ICartRepository
+    public interface ICartRepository
     {
+        Task<Cart> GetAsync(Guid Id);
     }
 }

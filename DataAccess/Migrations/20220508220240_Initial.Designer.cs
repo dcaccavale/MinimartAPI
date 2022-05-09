@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MinimarketDataContext))]
-    [Migration("20220508024050_AddEntities")]
-    partial class AddEntities
+    [Migration("20220508220240_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,10 +30,17 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Client")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Carts");
                 });
@@ -53,6 +60,25 @@ namespace DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("Entities.DailyTimeRange", b =>
                 {
                     b.Property<Guid>("Id")
@@ -63,11 +89,11 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HourFrom")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("HourFrom")
+                        .HasColumnType("time");
 
-                    b.Property<DateTime>("HourTo")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("HourTo")
+                        .HasColumnType("time");
 
                     b.Property<Guid?>("StoreId")
                         .HasColumnType("uniqueidentifier");
@@ -96,6 +122,9 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<double>("TotalDiscount")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -150,7 +179,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Amoun")
+                    b.Property<int>("Amound")
                         .HasColumnType("int");
 
                     b.Property<Guid>("ProductId")
@@ -210,6 +239,25 @@ namespace DataAccess.Migrations
                     b.ToTable("Vouchers");
 
                     b.HasDiscriminator<string>("Discriminator").IsComplete(false);
+                });
+
+            modelBuilder.Entity("Entities.Cart", b =>
+                {
+                    b.HasOne("Entities.Customer", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Entities.DailyTimeRange", b =>

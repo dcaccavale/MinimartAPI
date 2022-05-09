@@ -13,6 +13,6 @@ namespace Core.Interfaces
         Task<IEnumerable<StoreResponse>> GetAllAsync();
         Task<StoreResponse> GetAsync(Guid Id);
 
-       IEnumerable<StoreResponse> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan time);
+        Task<IEnumerable<StoreResponse>> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan time);
     }
 }

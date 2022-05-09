@@ -16,9 +16,9 @@ namespace DataAccess.Repositories
 
 
 
-        public Task<IEnumerable<StockProduct>> GetAllAvailableAsync()
+        public async Task<IEnumerable<StockProduct>> GetAllAvailableAsync()
         {
-            return base.GetAllAsync<StockProduct>(p => p.Amoun > 0);
+            return await _dataContext.StockProducts.Where(p => p.Amound > 0).Include(p => p.Product.Category).ToListAsync();
         }
 
         public Task<IEnumerable<StockProduct>> GetAllAsync()
@@ -28,7 +28,7 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId)
         {
-            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId).Include(p => p.Product.Category).ToListAsync();
+            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId && p.Amound > 0).Include(p => p.Product.Category).ToListAsync();
           
         }
 
@@ -41,6 +41,12 @@ namespace DataAccess.Repositories
         {
             return _dataContext.StockProducts.Where(p => p.Product.Id == productID && p.Store.Id == storeId).Include(p => p.Product.Category).FirstOrDefaultAsync();
 
+        }
+
+
+        Task<StockProduct> IStockRepository.Update(StockProduct stock)
+        {
+            return base.Update(stock);
         }
     }
 }

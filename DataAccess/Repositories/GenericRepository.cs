@@ -38,10 +38,24 @@ namespace DataAccess.Repositories
 
         public async Task<T?> GetAsync<T>(Guid Id) where T : Entity
         {
-
             return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(s=> s.Id == Id);   
         }
+        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null) where T : Entity
+        {
+            return await _dataContext.Set<T>().AsQueryable().FirstOrDefaultAsync(predicate);
+        }
 
+        public async Task<T> Add<T>(T entity) where T : Entity
+        {
+            _dataContext.Set<T>().Add(entity);
+            return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(e=> e.Id == entity.Id);
+        }
+
+        public async Task<T> Update<T>(T entity) where T : Entity
+        {
+            _dataContext.Set<T>().Update(entity);
+            return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(e => e.Id == entity.Id);
+        }
 
     }
 }

@@ -8,5 +8,6 @@ namespace DataAccess.Interfaces
         Task<IEnumerable<StockProduct>> GetAllAsync();
         Task<IEnumerable<StockProduct>> GetAllAvailableAsync();
         Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId);
+        Task<StockProduct> Update(StockProduct stock);
     }
 }

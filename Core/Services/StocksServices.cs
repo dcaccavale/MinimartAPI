@@ -34,7 +34,7 @@ namespace Core.Services
         {
             var group = listProductStock.GroupBy(
                  p => p.Product,
-                 p => p.Amoun,
+                 p => p.Amound,
                  (key, g) => new { Product = key, Amoun = g.ToList().Sum() });
             var stockResponseList = new List<StocksResponse>();
             group.ToList().ForEach(p => stockResponseList.Add(new StocksResponse() { ProductName = p.Product.Name, Count = p.Amoun, ProductId = p.Product.Id, ProductCategory = p.Product.Category.Description }));
@@ -47,14 +47,13 @@ namespace Core.Services
         /// <returns></returns>
         public IEnumerable<StocksResponse> GetAllAvailable()
         {
-            var listProductStock = _stockRepository.GetAllAsync().Result;
-            List<StocksResponse> stockResponseList = ToStockResponse(listProductStock); 
-            return stockResponseList;
+            var listProductStock = _stockRepository.GetAllAvailableAsync().Result;
+            return ToStockResponse(listProductStock);
         }
 
-        public IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId)
+        public async Task<IEnumerable<StocksResponse>> GetAllAvailableByStore(Guid storeId)
         {
-            var listProductStock = _stockRepository.GetAllAvailableByStore(storeId).Result;
+            var listProductStock = await _stockRepository.GetAllAvailableByStore(storeId);
             List<StocksResponse> stockResponseList = ToStockResponse(listProductStock);
             return stockResponseList;
         }
@@ -62,7 +61,7 @@ namespace Core.Services
         public StocksResponse? GetByPrductAndStore(Guid productID, Guid storeId)
         {
             var aProductStock = _stockRepository.GetByStoreAndProduct(productID,storeId).Result;
-            return aProductStock == null? null : new StocksResponse() { ProductName= aProductStock.Product.Name, Count = aProductStock.Amoun, ProductId= aProductStock.Product.Id, ProductCategory = aProductStock.Product.Category.Description };
+            return aProductStock == null? null : new StocksResponse() { ProductName= aProductStock.Product.Name, Count = aProductStock.Amound, ProductId= aProductStock.Product.Id, ProductCategory = aProductStock.Product.Category.Description };
         }
     }
 }

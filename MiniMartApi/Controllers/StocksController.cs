@@ -46,7 +46,7 @@ namespace Minimart_API.Controllers
         /// <param name="storeId">Store Id</param>
         /// <returns></returns>
         [HttpGet("/store/{storedId}")]
-        public IEnumerable<StocksResponse> GetAllAvailableByStore(Guid storeId)
+        public Task<IEnumerable<StocksResponse>> GetAllAvailableByStore(Guid storeId)
         {
             return _stockServices.GetAllAvailableByStore(storeId);
         }

@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Interfaces
 {
-    public  interface IStoreRepository : IGenericRepository<Store>
+    public interface IItemProductRepository
     {
-        Task<IEnumerable<Store>> GetAllAsync();
-        Task<IEnumerable<Store>> GetAllWhitDailyTimeRange();
-
-
+        Task<ItemProduct> Add(ItemProduct itemProduct);
+        Task<ItemProduct> GetByProductAndCartAsync(Guid productId, Guid cartId);
     }
 }

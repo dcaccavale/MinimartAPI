@@ -27,7 +27,10 @@ namespace MinimarketUnitTest
             new DailyTimeRange(){ DayOfWeek = DayOfWeek.Sunday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
             new DailyTimeRange(){ DayOfWeek = DayOfWeek.Monday.ToString(), HourFrom = new  TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
             new DailyTimeRange(){ DayOfWeek = DayOfWeek.Tuesday.ToString(), HourFrom =new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
-            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) }
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Wednesday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Thursday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Friday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) },
+            new DailyTimeRange(){ DayOfWeek = DayOfWeek.Saturday.ToString(), HourFrom = new TimeSpan(8,0,0), HourTo = new TimeSpan(20,30,0) }
 
             }
             };

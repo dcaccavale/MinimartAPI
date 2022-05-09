@@ -26,21 +26,22 @@ namespace Core.Services
         {
             _logger.Log(LogLevel.Information, "Esta obteniendo todos las entidades.");
              var result = await _storeRepository.GetAllAsync();
-            // var pp = _mapper.Map<StoreResponse>(new Store());
-            var pp = _mapper.ConfigurationProvider;
            
              return _mapper.Map<List<StoreResponse>>(result);
               
         }
 
-        public  IEnumerable<StoreResponse> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan  time)
+        public  async Task<IEnumerable<StoreResponse>> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan  time)
         {
             _logger.Log(LogLevel.Information, "");
-            var listStores =  _storeRepository.GetAllAvailable(dayOfWeek, time);
+            var listStores = await _storeRepository.GetAllWhitDailyTimeRange();
             ICollection<StoreResponse> result = new List<StoreResponse>();
-            listStores.ToList().ForEach(s=> result.Add(new StoreResponse() {Name= s.Name })
-                );
-            return  result.AsEnumerable<StoreResponse>();
+            foreach (var store in listStores)
+            {
+                if (store.IsOpen(time, dayOfWeek))
+                    result.Add(new StoreResponse() { Name = store.Name, Address = store.Address , Id= store.Id });
+            };
+            return  result.ToList();
         }
 
      
