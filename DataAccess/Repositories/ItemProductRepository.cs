@@ -17,9 +17,9 @@ namespace DataAccess.Repositories
             return base.Add(itemProduct);
         }
 
-        public Task<ItemProduct> GetByProductAndCartAsync(Guid productId, Guid cartId)
+        public  Task<ItemProduct> GetByProductAndCartAsync(Guid productId, Guid cartId)
         {
-            return base.FirstOrDefaultAsync<ItemProduct>(p => p.Product.Id == productId && p.Cart.Id == cartId);
+            return  base.FirstOrDefaultAsync<ItemProduct>(p => p.Product.Id == productId && p.Cart.Id == cartId);
         }
     }
 }

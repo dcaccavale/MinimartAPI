@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccess.Interfaces;
+using Entities;
 
 namespace DataAccess.Repositories
 {
-    public class ProductRepository : GenericRepository
+    public class ProductRepository : GenericRepository , IProductRepository
     {
         public ProductRepository(MinimarketDataContext dataContext) : base(dataContext)
         {
         }
-
+        public Task<Product> GetAsync(Guid Id)
+        {
+            return base.GetAsync<Product>(Id);
+        }
 
     }
 }

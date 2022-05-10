@@ -27,7 +27,7 @@ namespace Core.Services
         {
             var cart = await _cartRepository.GetAsync(cartId);
             var stock = _stockRepository.GetByStoreAndProduct(productId,cart.Store.Id).Result;
-            if (stock != null && stock.Amound >= Amound)
+            if (stock != null && stock.Quantity >= Amound)
             {
                 ItemProduct itemProduct = new ItemProduct() { 
                     PriceUnit= stock.Product.Price,
@@ -37,16 +37,17 @@ namespace Core.Services
                 //Add Item to repository
                 await _itemProductRepository.Add(itemProduct);
                 //Update Stock to repository
-                stock.Amound -= Amound;
+                stock.Quantity -= Amound;
                 await _stockRepository.Update(stock); 
 
                 return new ItemProductResponse() { 
-                 Amound = itemProduct.Quantity,
-                 productId = productId, 
-                 storeId  = stock.Store.Id, 
-                 cartId= cartId,
-                 Price= itemProduct.PriceUnit,
-                 Pay = itemProduct.PriceUnit * itemProduct.Quantity
+                 Quantity = itemProduct.Quantity,
+                 ProductId = productId, 
+                 StoreId  = stock.Store.Id, 
+                 CartID= cartId,
+                 UnitPrice= itemProduct.PriceUnit,
+                 AmoundTotal = itemProduct.PriceUnit * itemProduct.Quantity,
+                 ProductName= itemProduct.Product.Name
                 };
             }
             return null;
@@ -65,17 +66,17 @@ namespace Core.Services
             var itemProduct = await _itemProductRepository.GetByProductAndCartAsync(productId, cartId);
             if (itemProduct != null && stock != null)
             {
-                stock.Amound += itemProduct.Quantity;
+                stock.Quantity += itemProduct.Quantity;
                 //Delete Stock to repository
                 return new ItemProductResponse()
                 {
-                    Amound = itemProduct.Quantity,
-                    productId = productId,
-                    storeId = stock.Store.Id,
-                    cartId = cartId,
-                    Price = itemProduct.PriceUnit,
-                    Pay = itemProduct.PriceUnit * itemProduct.Quantity
-
+                    Quantity = itemProduct.Quantity,
+                    ProductId = productId,
+                    StoreId = stock.Store.Id,
+                    CartID = cartId,
+                    UnitPrice = itemProduct.PriceUnit,
+                    AmoundTotal = itemProduct.PriceUnit * itemProduct.Quantity,
+                    ProductName = itemProduct.Product.Name
                 };
             }
             return null;

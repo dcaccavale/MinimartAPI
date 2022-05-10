@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Discount;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -19,9 +20,21 @@ namespace DataAccess
         public DbSet<Product> Products { get; set; }
         public DbSet<RangeDate> RangeDate { get; set; }
         public DbSet<StockProduct> StockProducts { get; set; }
-        public DbSet<Store> Stores   { get; set; }
-        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<Store> Stores { get; set; }
 
+
+
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<VoucherProduct> VouchersProduct { get; set; }
+        public DbSet<VoucherCategory> VouchersCategory { get; set; }
+
+        public DbSet<CategoriesDiscountToApply> CategoriesDiscountToApply { get; set; }
+        public DbSet<ProductDiscountToApply> ProductDiscountToApply { get; set; }
+        public DbSet<ExceptedDiscountProduct> ExceptedDiscountProduct { get; set; }
+
+        public DbSet<PayTakeDiscount> PayTakeDiscount { get; set; }
+        public DbSet<PercentageDiscount> PercentageDiscounts { get; set; }
+        public DbSet<PercentageSecundDiscount> PercentageSecundDiscounts { get; set; }  
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,8 +46,24 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Voucher>()
-               .HasDiscriminator()
+             .ToTable("Vouchers")
+            .HasDiscriminator<string>("Type")
+            .HasValue<VoucherCategory>("VoucherCategory")
+            .HasValue<VoucherProduct>("VoucherProduct")
                 .IsComplete(false);
+
+            modelBuilder.Entity<GenericDiscount>()
+                .ToTable("Discounts")
+                .HasDiscriminator<string>("Type")
+                .HasValue<PercentageDiscount>("PercentageDiscount")
+                .HasValue<PercentageSecundDiscount>("PercentageSecundDiscount")
+                .HasValue<PayTakeDiscount>("PayTakeDiscount")
+                .IsComplete(false);
+
+
+            
+
+
         }
     }
 

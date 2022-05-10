@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Discount
 {
-    public class PayTakeDiscount : Entity, IDiscount
+    public class PayTakeDiscount : GenericDiscount, IDiscount
     {
+ 
         public int PayCount { get; set; }
         public int TakeCount { get; set; }
 
@@ -19,8 +20,8 @@ namespace Entities.Discount
         /// <returns></returns>
         protected virtual int GetMaxquantityProducto(int quantity)
         {
-
-            double auxQuantity = quantity / TakeCount;
+            int auxquantity = (Limit == 0  || Limit > quantity ) ? quantity : Limit;
+            double auxQuantity = auxquantity / TakeCount;
             return   (int)Math.Floor(auxQuantity) ;
 
         }

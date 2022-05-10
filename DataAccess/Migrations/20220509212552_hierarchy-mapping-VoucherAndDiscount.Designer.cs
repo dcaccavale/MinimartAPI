@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MinimarketDataContext))]
-    partial class MinimarketDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220509212552_hierarchy-mapping-VoucherAndDiscount")]
+    partial class hierarchymappingVoucherAndDiscount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,28 +42,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Carts", (string)null);
-                });
-
-            modelBuilder.Entity("Entities.CategoriesDiscountToApply", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VoucherId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("VoucherId");
-
-                    b.ToTable("CategoriesDiscountToApply", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
@@ -76,7 +57,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Entities.Customer", b =>
@@ -95,7 +76,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Entities.DailyTimeRange", b =>
@@ -121,7 +102,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("DailyTimeRange", (string)null);
+                    b.ToTable("DailyTimeRange");
                 });
 
             modelBuilder.Entity("Entities.Discount.GenericDiscount", b =>
@@ -130,44 +111,18 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Limit")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Discounts", (string)null);
-
-                    b.HasDiscriminator<string>("Type").IsComplete(false).HasValue("GenericDiscount");
-                });
-
-            modelBuilder.Entity("Entities.ExceptedDiscountProduct", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("VoucherCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VoucherId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Limit")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.ToTable("GenericDiscount");
 
-                    b.HasIndex("VoucherCategoryId");
-
-                    b.HasIndex("VoucherId");
-
-                    b.ToTable("ExceptedDiscountProduct", (string)null);
+                    b.HasDiscriminator<string>("Discriminator").IsComplete(false);
                 });
 
             modelBuilder.Entity("Entities.ItemProduct", b =>
@@ -205,7 +160,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("VoucherAppledId");
 
-                    b.ToTable("ItemProduct", (string)null);
+                    b.ToTable("ItemProduct");
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
@@ -232,33 +187,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
-                });
-
-            modelBuilder.Entity("Entities.ProductDiscountToApply", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VoucherId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("VoucherProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("VoucherId");
-
-                    b.HasIndex("VoucherProductId");
-
-                    b.ToTable("ProductDiscountToApply", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Entities.RangeDate", b =>
@@ -269,7 +198,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RangeDate", (string)null);
+                    b.ToTable("RangeDate");
                 });
 
             modelBuilder.Entity("Entities.StockProduct", b =>
@@ -293,7 +222,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("StockProducts", (string)null);
+                    b.ToTable("StockProducts");
                 });
 
             modelBuilder.Entity("Entities.Store", b =>
@@ -311,7 +240,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Entities.Voucher", b =>
@@ -328,15 +257,15 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("RangeDateId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("StoreId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -344,53 +273,9 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Vouchers", (string)null);
+                    b.ToTable("Vouchers");
 
-                    b.HasDiscriminator<string>("Type").IsComplete(false).HasValue("Voucher");
-                });
-
-            modelBuilder.Entity("Entities.Discount.PayTakeDiscount", b =>
-                {
-                    b.HasBaseType("Entities.Discount.GenericDiscount");
-
-                    b.Property<int>("PayCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TakeCount")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PayTakeDiscount");
-                });
-
-            modelBuilder.Entity("Entities.Discount.PercentageDiscount", b =>
-                {
-                    b.HasBaseType("Entities.Discount.GenericDiscount");
-
-                    b.Property<double>("Percentage")
-                        .HasColumnType("float");
-
-                    b.HasDiscriminator().HasValue("PercentageDiscount");
-                });
-
-            modelBuilder.Entity("Entities.VoucherCategory", b =>
-                {
-                    b.HasBaseType("Entities.Voucher");
-
-                    b.HasDiscriminator().HasValue("VoucherCategory");
-                });
-
-            modelBuilder.Entity("Entities.VoucherProduct", b =>
-                {
-                    b.HasBaseType("Entities.Voucher");
-
-                    b.HasDiscriminator().HasValue("VoucherProduct");
-                });
-
-            modelBuilder.Entity("Entities.Discount.PercentageSecundDiscount", b =>
-                {
-                    b.HasBaseType("Entities.Discount.PercentageDiscount");
-
-                    b.HasDiscriminator().HasValue("PercentageSecundDiscount");
+                    b.HasDiscriminator<string>("Discriminator").IsComplete(false);
                 });
 
             modelBuilder.Entity("Entities.Cart", b =>
@@ -412,53 +297,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Entities.CategoriesDiscountToApply", b =>
-                {
-                    b.HasOne("Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.VoucherCategory", "Voucher")
-                        .WithMany("CategoriesToApply")
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Voucher");
-                });
-
             modelBuilder.Entity("Entities.DailyTimeRange", b =>
                 {
                     b.HasOne("Entities.Store", null)
                         .WithMany("DailyTimeRange")
                         .HasForeignKey("StoreId");
-                });
-
-            modelBuilder.Entity("Entities.ExceptedDiscountProduct", b =>
-                {
-                    b.HasOne("Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.VoucherCategory", null)
-                        .WithMany("ExceptedDiscountProduct")
-                        .HasForeignKey("VoucherCategoryId");
-
-                    b.HasOne("Entities.Voucher", "Voucher")
-                        .WithMany()
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Voucher");
                 });
 
             modelBuilder.Entity("Entities.ItemProduct", b =>
@@ -493,29 +336,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Entities.ProductDiscountToApply", b =>
-                {
-                    b.HasOne("Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Voucher", "Voucher")
-                        .WithMany()
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.VoucherProduct", null)
-                        .WithMany("ProductToApply")
-                        .HasForeignKey("VoucherProductId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Voucher");
                 });
 
             modelBuilder.Entity("Entities.StockProduct", b =>
@@ -564,18 +384,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Store", b =>
                 {
                     b.Navigation("DailyTimeRange");
-                });
-
-            modelBuilder.Entity("Entities.VoucherCategory", b =>
-                {
-                    b.Navigation("CategoriesToApply");
-
-                    b.Navigation("ExceptedDiscountProduct");
-                });
-
-            modelBuilder.Entity("Entities.VoucherProduct", b =>
-                {
-                    b.Navigation("ProductToApply");
                 });
 #pragma warning restore 612, 618
         }

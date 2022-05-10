@@ -4,12 +4,15 @@ namespace Core.Infrastructure
 { 
     public class ItemProductResponse
     {
-        public Guid storeId { get; set; }
-        public Guid productId { get; set; }
-        public Guid cartId { get; set; }
-        public int Amound { get; set; }
-        public double Price { get; set; }
-        public double Pay { get; set; }
+        public Guid StoreId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid CartID { get; set; }
+        public int Quantity { get; set; }
+        public double UnitPrice { get; set; }
+        public double DiscountTotal { get; set; }
+        public double AmoundTotal { get; set; }
+
+        public string  ProductName { get; set; }
 
     }
 }

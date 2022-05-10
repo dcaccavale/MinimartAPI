@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Discount
 {
-    public class PercentageDiscount : Entity, IDiscount
+    public class PercentageDiscount : GenericDiscount, IDiscount
     {
-        /// <summary>
-        /// maximum limit to apply discount, if the value 0 indicates unlimited
-        /// </summary>
-        public int Limit { get; set; }
+
         /// <summary>
         /// Percentaje to apply, max value 100
         /// </summary>

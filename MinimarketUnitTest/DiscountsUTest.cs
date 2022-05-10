@@ -83,6 +83,18 @@ namespace MinimarketUnitTest
         }
 
         /// <summary>
+        /// Calculate Pay to Take discount ,  product priceUnit 1  product quantity 10  discount  Pay 2 take 3 , limited up to 6 products=> total Discount  2 product price 1 
+        /// </summary>
+        ///
+        [Test]
+        public void PayTakeDiscountWhitLimitTest()
+        {
+            PayTakeDiscount payTakeDiscount = new() { PayCount = 2, TakeCount = 3, Limit=6 };
+            Assert.AreEqual(payTakeDiscount.CalculateDiscount(new ItemProduct() { PriceUnit = 1, Quantity = 10 }), 2);
+
+        }
+
+        /// <summary>
         /// Calculate Pay to Take discount , limit = 0 applies whitout limit ,  product priceUnit 1  product quantity 4  discount  Pay 2 take 3  => total Discount  1 product price 1 
         /// </summary>
         ///

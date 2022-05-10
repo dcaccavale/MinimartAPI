@@ -10,11 +10,11 @@ namespace Minimart_API.Controllers
     [ApiController]
     public class VoucherController : ControllerBase
     {
-        private readonly IStoreServices _storeServices;
+        private readonly IVoucherServices _voucherServices;
         // GET: api/<StoresController>
-        public VoucherController(IStoreServices storeServices)
+        public VoucherController(IVoucherServices voucherServices)
         {
-            _storeServices = storeServices;
+            _voucherServices = voucherServices;
         }
         /// <summary>
         /// Validate a voucher by code voucher and storeId
@@ -22,13 +22,13 @@ namespace Minimart_API.Controllers
         /// <param name="voucherCode"></param>
         /// <returns></returns>
         // GET api/<StoresController>/5
-        [HttpGet("{id}")]
-        public Task<bool> IsValid(string voucherCode, Guid storeID)
+        [HttpGet("api/validate-{voucherCode,storeId}")]
+        public Task<bool> IsValid(string voucherCode, Guid storeId)
         {
-            return null;
+            return _voucherServices.ValidateByCode(voucherCode, storeId);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{voucherCode}/product{productId}")]
         public Task<bool> CalculateDiscount(string voucherCode, Guid productId)
         {
             return null;

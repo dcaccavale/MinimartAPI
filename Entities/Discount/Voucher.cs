@@ -39,43 +39,54 @@ namespace Entities
         public Store Store { get; set; }
 
         /// <summary>
-        /// Validate a voucher in a range of dates and day of the week
+        /// Validate a voucher in a range of dates and day of the week 
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
         /// 
-        public bool validate(DateTime date) {
+        public bool Validate(DateTime dateToValidate, Store storeToValidate) {
 
-            //dayOfWeek.Length == 0 applies every day of the week
-            return RangeDate.DateInRange(date) && ( DaysOfWeek.Length == 0 || date.DayOfWeek.ToString().Contains(DaysOfWeek));
+                 //Validate store
+            return storeToValidate.Id == Store.Id &&
+                //Validate date in range 
+                RangeDate.DateInRange(dateToValidate) &&
+                //dayOfWeek.Length == 0 applies every day of the week
+                (DaysOfWeek.Length == 0 || dateToValidate.DayOfWeek.ToString().Contains(DaysOfWeek));
       
         }
+        public double CalculateDiscount(ItemProduct product, DateTime dateTimeToApply )
+        {
+            if (!Validate(dateTimeToApply, this.Store)) return 0;
+            return this.Discount.CalculateDiscount(product);
+
+        }
+
 
     }
     /// <summary>
     /// A voucher to apply for products
     /// </summary>
-    internal class VoucherProduct : Voucher
+    public class VoucherProduct : Voucher
     {
         /// <summary>
         /// Products to apply 
         /// </summary>
-        public IList<Product> ProductToApply { get; set; }
+        public IList<ProductDiscountToApply> ProductToApply { get; set; }
         
     }
     /// <summary>
     /// a voucher to apply for categories product
     /// </summary>
-    internal class VoucherCategory : Voucher
+    public class VoucherCategory : Voucher
     {
         /// <summary>
         /// Categories product to apply
         /// </summary>
-        public IList<Category> CategoriesToApply { get; set; }
+        public IList<CategoriesDiscountToApply> CategoriesToApply { get; set; }
 
         /// <summary>
         /// List of excepted products
         /// </summary>
-        public IList<Product> ProductExcept { get; set; }
+        public IList<ExceptedDiscountProduct> ExceptedDiscountProduct { get; set; }
     }
 }

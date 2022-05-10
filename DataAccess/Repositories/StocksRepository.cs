@@ -18,7 +18,7 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<StockProduct>> GetAllAvailableAsync()
         {
-            return await _dataContext.StockProducts.Where(p => p.Amound > 0).Include(p => p.Product.Category).ToListAsync();
+            return await _dataContext.StockProducts.Where(p => p.Quantity > 0).Include(p => p.Product.Category).ToListAsync();
         }
 
         public Task<IEnumerable<StockProduct>> GetAllAsync()
@@ -28,7 +28,7 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId)
         {
-            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId && p.Amound > 0).Include(p => p.Product.Category).ToListAsync();
+            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId && p.Quantity > 0).Include(p => p.Product.Category).ToListAsync();
           
         }
 

@@ -19,9 +19,10 @@ namespace Minimart_API.Controllers
         /// Setup all data  
         /// </summary>
         [HttpGet]
-        public void Get()
+        public bool Get()
         {
              _configureServices.initModel();
+            return true;
         }
     }
 }

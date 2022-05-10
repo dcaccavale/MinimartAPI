@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MinimarketDataContext))]
-    partial class MinimarketDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220509224921_hierarchy-mapping-Review1")]
+    partial class hierarchymappingReview1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +42,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Entities.CategoriesDiscountToApply", b =>
@@ -61,7 +63,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("VoucherId");
 
-                    b.ToTable("CategoriesDiscountToApply", (string)null);
+                    b.ToTable("CategoriesDiscountToApply");
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
@@ -76,7 +78,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Entities.Customer", b =>
@@ -95,7 +97,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Entities.DailyTimeRange", b =>
@@ -121,7 +123,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("DailyTimeRange", (string)null);
+                    b.ToTable("DailyTimeRange");
                 });
 
             modelBuilder.Entity("Entities.Discount.GenericDiscount", b =>
@@ -167,7 +169,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("VoucherId");
 
-                    b.ToTable("ExceptedDiscountProduct", (string)null);
+                    b.ToTable("ExceptedDiscountProduct");
                 });
 
             modelBuilder.Entity("Entities.ItemProduct", b =>
@@ -205,7 +207,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("VoucherAppledId");
 
-                    b.ToTable("ItemProduct", (string)null);
+                    b.ToTable("ItemProduct");
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
@@ -232,7 +234,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Entities.ProductDiscountToApply", b =>
@@ -258,7 +260,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("VoucherProductId");
 
-                    b.ToTable("ProductDiscountToApply", (string)null);
+                    b.ToTable("ProductDiscountToApply");
                 });
 
             modelBuilder.Entity("Entities.RangeDate", b =>
@@ -269,7 +271,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RangeDate", (string)null);
+                    b.ToTable("RangeDate");
                 });
 
             modelBuilder.Entity("Entities.StockProduct", b =>
@@ -293,7 +295,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("StockProducts", (string)null);
+                    b.ToTable("StockProducts");
                 });
 
             modelBuilder.Entity("Entities.Store", b =>
@@ -311,7 +313,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Entities.Voucher", b =>

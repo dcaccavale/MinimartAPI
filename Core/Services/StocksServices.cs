@@ -34,7 +34,7 @@ namespace Core.Services
         {
             var group = listProductStock.GroupBy(
                  p => p.Product,
-                 p => p.Amound,
+                 p => p.Quantity,
                  (key, g) => new { Product = key, Amoun = g.ToList().Sum() });
             var stockResponseList = new List<StocksResponse>();
             group.ToList().ForEach(p => stockResponseList.Add(new StocksResponse() { ProductName = p.Product.Name, Count = p.Amoun, ProductId = p.Product.Id, ProductCategory = p.Product.Category.Description }));
@@ -61,7 +61,7 @@ namespace Core.Services
         public StocksResponse? GetByPrductAndStore(Guid productID, Guid storeId)
         {
             var aProductStock = _stockRepository.GetByStoreAndProduct(productID,storeId).Result;
-            return aProductStock == null? null : new StocksResponse() { ProductName= aProductStock.Product.Name, Count = aProductStock.Amound, ProductId= aProductStock.Product.Id, ProductCategory = aProductStock.Product.Category.Description };
+            return aProductStock == null? null : new StocksResponse() { ProductName= aProductStock.Product.Name, Count = aProductStock.Quantity, ProductId= aProductStock.Product.Id, ProductCategory = aProductStock.Product.Category.Description };
         }
     }
 }

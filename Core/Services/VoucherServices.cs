@@ -1,4 +1,7 @@
-﻿using DataAccess.Interfaces;
+﻿using Core.Infrastructure;
+using Core.Interfaces;
+using DataAccess.Interfaces;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +10,49 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class VoucherServices
+    public class VoucherServices :IVoucherServices
     {
         private readonly IVoucherRepository _voucherRepository;
         private readonly IProductRepository  _productRepository;
-         public VoucherServices(IVoucherRepository voucherRepository, IProductRepository productRepository)
+        private readonly IStoreRepository _storeRepository;
+
+        public VoucherServices(IVoucherRepository voucherRepository, IProductRepository productRepository, IStoreRepository storeRepository)
          {
             _voucherRepository = voucherRepository;
             _productRepository = productRepository;
+            _storeRepository   = storeRepository;
           }
 
-        public Task<bool> ValidateByCode(string code, Guid storeId)
+        public async Task<bool> ValidateByCode(string code, Guid storeId)
         {
-            var voucher = _voucherRepository.GetVoucher(code, storeId);
-            return null;
+            var voucher = await _voucherRepository.GetAsync(code, storeId);
+            var store = await _storeRepository.GetAsync(storeId);
+            //Invalid Code 
+            if (voucher == null) return false;
+            // apply to the store
+            return  voucher.Validate(DateTime.Now, store);
         }
+        public async Task<ItemProductResponse?> CalculateDiscount(Guid voucherId, Guid productId, Guid CartId, int quantity)
+        {
+            Voucher? voucher =  await _voucherRepository.GetAsync(voucherId);
+            //Invalid Code 
+            if (voucher == null || !voucher.Validate(DateTime.Now, voucher.Store)) return null;
+            // apply to the store
+            Product? product = await _productRepository.GetAsync(productId);
+            var itemProductToAdd = new ItemProduct() { Product= product, Quantity=  quantity, PriceUnit=product.Price  };
+            var discount = voucher.CalculateDiscount(itemProductToAdd,DateTime.Now);
+
+            return new ItemProductResponse()
+            {
+                CartID = CartId,
+                Quantity = quantity,
+                AmoundTotal = itemProductToAdd.TotalAmound,
+                DiscountTotal = discount,
+                UnitPrice = product.Price,
+                ProductId = product.Id
+            };
+        }
+
+
     }
 }
