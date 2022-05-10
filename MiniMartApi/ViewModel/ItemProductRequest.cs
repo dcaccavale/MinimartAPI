@@ -4,9 +4,10 @@ namespace Minimart_API.ViewModel
 {
     public class ItemProductRequest
     {
-        public Guid cartId { get; set; }
+        public Guid CartId { get; set; }
         public int Quantity { get; set; }
-        public Guid productId { get; set; }
+        public Guid ProductId { get; set; }
+        public string? VoucherCode { get; set; }
         
     }
 }

@@ -41,7 +41,7 @@ namespace DataAccess.Repositories
                  .Include(p => p.ProductToApply));
 
             }
-            throw new NotImplementedException();
+
         }
 
         public Task<Voucher?> GetOneByCriteriaAsync(Expression<Func<Voucher, bool>> predicate = null, Func<IQueryable<Voucher>, IIncludableQueryable<Voucher, object>> include = null)

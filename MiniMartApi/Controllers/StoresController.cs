@@ -21,9 +21,9 @@ namespace Minimart_API.Controllers
         {
             _storeServices = storeServices;
         }
-        
+
         /// <summary>
-        /// 
+        /// Gets all stores 
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -32,7 +32,13 @@ namespace Minimart_API.Controllers
             
           return _storeServices.GetAllAsync();
         }
-
+        /// <summary>
+        ///  Gets store available in day of week and time
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <param name="hour"></param>
+        /// <param name="minutes"></param>
+        /// <returns></returns>
         [HttpGet("/available/{dayOfWeek,hour,minute}")]
         public Task<IEnumerable<StoreResponse>> GetAllAvailable(string dayOfWeek, byte hour, byte minutes)
         {
@@ -48,7 +54,11 @@ namespace Minimart_API.Controllers
 
 
       
-
+        /// <summary>
+        /// Gets store by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET api/<StoresController>/5
         [HttpGet("{id}")]
         public Task<StoreResponse> Get(Guid id)

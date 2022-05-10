@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Minimart_API.Controllers
@@ -29,10 +30,18 @@ namespace Minimart_API.Controllers
             return _voucherServices.ValidateByCode(voucherCode, storeId);
         }
 
+        /// <summary>
+        /// Calculate discount
+        /// </summary>
+        /// <param name="voucherCode"></param>
+        /// <param name="productId"></param>
+        /// <param name="CartId"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         [HttpGet("api/calculate/{voucherCode,productId, cartId,quantity}")]
         public Task<ItemProductResponse> CalculateDiscount(string voucherCode, Guid productId, Guid CartId, int quantity)
         {
-            return _voucherServices.CalculateDiscount( voucherCode,  productId, CartId, quantity);
+            return  _voucherServices.CalculateDiscount( voucherCode,  productId, CartId, quantity);
         }
     }
 }

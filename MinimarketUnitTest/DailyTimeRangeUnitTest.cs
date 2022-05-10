@@ -26,10 +26,10 @@ namespace MinimarketUnitTest
 
         }
 
-      
+
 
         /// <summary>
-        /// 
+        /// Valid from and to date range 
         /// </summary>
         ///
         [Test]
@@ -45,7 +45,7 @@ namespace MinimarketUnitTest
             Assert.True(dailyTimeRange.HourInRange(DayOfWeek.Monday, time));
         }
         /// <summary>
-        /// 
+        /// invalid from and to date range, out of houer 
         /// </summary>
         ///
         [Test]
@@ -63,7 +63,7 @@ namespace MinimarketUnitTest
         }
 
         /// <summary>
-        /// Diferent day of week   
+        /// Invalid day of week   
         /// </summary>
         ///
         [Test]

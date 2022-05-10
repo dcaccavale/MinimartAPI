@@ -83,20 +83,11 @@ namespace Core.Services
                     {
                         stock.Quantity += itemProduct.Quantity;
                         //Delete Stock to repository
-                        var itemDeleted = _itemProductRepository.Delete(itemProduct);
+                        var itemDeleted = await _itemProductRepository.Delete(itemProduct);
                    
                         if (itemDeleted == null) return null;
-                        return new ItemProductResponse()
-                        {
-                            Quantity = itemProduct.Quantity,
-                            ProductId = productId,
-                            StoreId = stock.Store.Id,
-                            CartID = cartId,
-                            UnitPrice = itemProduct.PriceUnit,
-                            AmoundTotal = itemProduct.PriceUnit * itemProduct.Quantity,
-                            ProductName = itemProduct.Product.Name
-                        };
-                    }
+                        return _mapper.Map<ItemProduct, ItemProductResponse>(itemDeleted);
+                }
                 }
 
                 return null;

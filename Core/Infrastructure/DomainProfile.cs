@@ -35,7 +35,7 @@ namespace Core.Infrastructure
                 .ForMember(des => des.ProductId, m => m.MapFrom(sourse => sourse.Product.Id))
                 .ForMember(des => des.UnitPrice, m => m.MapFrom(sourse => sourse.Product.Price))
                 .ForMember(des => des.CartID, m => m.MapFrom(sourse => sourse.Cart.Id))
-                .ForMember(des => des.AmoundTotal, m => m.MapFrom(sourse => sourse.TotalAmound))
+                .ForMember(des => des.AmoundTotal, m => m.MapFrom(sourse => (sourse.PriceUnit * sourse.Quantity)))
                 .ForMember(des => des.DiscountTotal, m => m.MapFrom(sourse => sourse.TotalDiscount))
                 .ForMember(des => des.AmoundTotalWhitDiscount, m => m.MapFrom(sourse => (sourse.TotalAmound - sourse.TotalDiscount)));
                        

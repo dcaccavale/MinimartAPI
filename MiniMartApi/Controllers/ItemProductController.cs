@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minimart_API.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Minimart_API.Controllers
@@ -23,14 +24,10 @@ namespace Minimart_API.Controllers
         /// Add an item to cart if stock is available
         /// </summary>
         /// <returns></returns>
-        ///   [SwaggerTag("Pais", 
-       
         [HttpPost]
         public Task<ItemProductResponse> Post([FromBody] ItemProductRequest itemProductRequest)
         {
-
-            return _cartServices.AddItemProduct(itemProductRequest.productId, itemProductRequest.cartId, itemProductRequest.Quantity);
-        
+            return _cartServices.AddItemProduct(itemProductRequest.ProductId, itemProductRequest.CartId, itemProductRequest.Quantity, itemProductRequest.VoucherCode);
         }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace Minimart_API.Controllers
         [HttpDelete]
         public Task<ItemProductResponse> Delete([FromBody] ItemProductRequest itemProductRequest)
         {
-            return _cartServices.DeleteItemProduct(itemProductRequest.productId, itemProductRequest.cartId);
+            return _cartServices.DeleteItemProduct(itemProductRequest.ProductId, itemProductRequest.CartId);
 
         }
 
