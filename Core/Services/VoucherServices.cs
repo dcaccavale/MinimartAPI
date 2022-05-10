@@ -48,34 +48,6 @@ namespace Core.Services
             return voucher.Validate(DateTime.Now, store);
         }
 
-        /// <summary>
-        /// calculate discount to a product applying a valid code
-        /// </summary>
-        /// <param name="voucherId"></param>
-        /// <param name="productId"></param>
-        /// <param name="CartId"></param>
-        /// <param name="quantity"></param>
-        /// <returns></returns>
-        public async Task<ItemProductResponse?> CalculateDiscount(Guid voucherId, Guid productId, Guid CartId, int quantity)
-        {
-            Voucher? voucher = await _voucherRepository.GetAsync(voucherId);
-            //Invalid Code 
-            if (voucher == null || !voucher.Validate(DateTime.Now, voucher.Store)) return null;
-            // apply to the store
-            Product? product = await _productRepository.GetAsync(productId);
-            var itemProductToAdd = new ItemProduct() { Product = product, Quantity = quantity, PriceUnit = product.Price };
-            var discount = voucher.CalculateDiscount(itemProductToAdd, DateTime.Now);
-
-            return new ItemProductResponse()
-            {
-                CartID = CartId,
-                Quantity = quantity,
-                AmoundTotal = itemProductToAdd.TotalAmound,
-                DiscountTotal = discount,
-                UnitPrice = product.Price,
-                ProductId = product.Id
-            };
-        }
 
 
         /// <summary>
@@ -88,7 +60,7 @@ namespace Core.Services
         /// <returns></returns>
         public async Task<ItemProductResponse> CalculateDiscount(string voucherCode, Guid productId, Guid CartId, int quantity)
         {
-            Voucher voucher = await _voucherRepository.GetOneByCodeAsync(voucherCode);
+            Voucher? voucher = await _voucherRepository.GetOneByCodeAsync(voucherCode);
             //Invalid Code 
             if (voucher == null || !voucher.Validate(DateTime.Now, voucher.Store)) return new ItemProductResponse();
             
