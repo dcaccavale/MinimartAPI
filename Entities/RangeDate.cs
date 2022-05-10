@@ -11,8 +11,9 @@ namespace Entities
     /// </summary>
     public class RangeDate : Entity
     {
-        private  DateTime DateFrom { get; set; }
-        private  DateTime DateTo { get; set; }
+        public  DateTime DateFrom { get; set; }
+        public  DateTime DateTo { get; set; }
+
         public RangeDate()
         {
 

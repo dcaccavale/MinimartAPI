@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Infrastructure;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,16 +23,16 @@ namespace Minimart_API.Controllers
         /// <param name="voucherCode"></param>
         /// <returns></returns>
         // GET api/<StoresController>/5
-        [HttpGet("api/validate-{voucherCode,storeId}")]
+        [HttpGet("api/validate/{voucherCode,storeId}")]
         public Task<bool> IsValid(string voucherCode, Guid storeId)
         {
             return _voucherServices.ValidateByCode(voucherCode, storeId);
         }
 
-        [HttpGet("{voucherCode}/product{productId}")]
-        public Task<bool> CalculateDiscount(string voucherCode, Guid productId)
+        [HttpGet("api/calculate/{voucherCode,productId, cartId,quantity}")]
+        public Task<ItemProductResponse> CalculateDiscount(string voucherCode, Guid productId, Guid CartId, int quantity)
         {
-            return null;
+            return _voucherServices.CalculateDiscount( voucherCode,  productId, CartId, quantity);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Core.Interfaces
     public interface IVoucherServices
     {
         Task<bool> ValidateByCode(string code, Guid storeId);
+        Task<ItemProductResponse> CalculateDiscount(string voucherCode, Guid productId, Guid CartId, int quantity);
     }
 }

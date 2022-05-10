@@ -81,7 +81,10 @@ namespace DataAccess.Repositories
             var query = _dataContext.Set<T>().AsQueryable();
             if (include != null)
                 query = include(query);
-            return await query.FirstOrDefaultAsync(predicate);
+            if (predicate != null)
+                  return await query.FirstOrDefaultAsync(predicate);
+            return await query.FirstOrDefaultAsync();
+
         }
         /// <summary>
         /// Generic Add Entity to Set

@@ -11,7 +11,7 @@ namespace Core.Infrastructure
         public double UnitPrice { get; set; }
         public double DiscountTotal { get; set; }
         public double AmoundTotal { get; set; }
-
+        public double AmoundTotalWhitDiscount { get; set; }
         public string  ProductName { get; set; }
 
     }

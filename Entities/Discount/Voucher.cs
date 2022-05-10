@@ -53,7 +53,7 @@ namespace Entities
                 //Validate date in range 
                 RangeDate.DateInRange(dateToValidate) &&
                 //dayOfWeek.Length == 0 applies every day of the week
-                (DaysOfWeek.Length == 0 || dateToValidate.DayOfWeek.ToString().Contains(DaysOfWeek));
+                (DaysOfWeek.Length == 0 || DaysOfWeek.Contains(dateToValidate.DayOfWeek.ToString()));
       
         }
         /// <summary>

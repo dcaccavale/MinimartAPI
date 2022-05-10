@@ -22,22 +22,24 @@ namespace Core.Infrastructure
 
             CreateMap<Store, StoreResponse>();
             CreateMap<StockProduct, StocksResponse>()
-                .ForMember(des=> des.ProductName ,m=> m.MapFrom(sourse=> sourse.Product.Name))
+                .ForMember(des => des.ProductName, m => m.MapFrom(sourse => sourse.Product.Name))
                 .ForMember(des => des.Quantity, m => m.MapFrom(sourse => sourse.Quantity))
                 .ForMember(des => des.ProductId, m => m.MapFrom(sourse => sourse.Product.Id))
-                .ForMember(des => des.ProductCategory , m => m.MapFrom(sourse => sourse.Product.Category.Description))
+                .ForMember(des => des.ProductCategory, m => m.MapFrom(sourse => sourse.Product.Category.Description))
                 .ForMember(des => des.StoreId, m => m.MapFrom(sourse => sourse.Store.Id))
-                .ForMember(des => des.StoreName, m => m.MapFrom(sourse => sourse.Store.Name))
+                .ForMember(des => des.StoreName, m => m.MapFrom(sourse => sourse.Store.Name));
+                
+            CreateMap<ItemProduct, ItemProductResponse>()
+                .ForMember(des => des.ProductName, m => m.MapFrom(sourse => sourse.Product.Name))
+                .ForMember(des => des.Quantity, m => m.MapFrom(sourse => sourse.Quantity))
+                .ForMember(des => des.ProductId, m => m.MapFrom(sourse => sourse.Product.Id))
+                .ForMember(des => des.UnitPrice, m => m.MapFrom(sourse => sourse.Product.Price))
+                .ForMember(des => des.CartID, m => m.MapFrom(sourse => sourse.Cart.Id))
+                .ForMember(des => des.AmoundTotal, m => m.MapFrom(sourse => sourse.TotalAmound))
+                .ForMember(des => des.DiscountTotal, m => m.MapFrom(sourse => sourse.TotalDiscount))
+                .ForMember(des => des.AmoundTotalWhitDiscount, m => m.MapFrom(sourse => (sourse.TotalAmound - sourse.TotalDiscount)));
+                       
 
-                ;
-
-            /*
-                 //BranchCollege
-                CreateMap<BranchCollege, BranchCollegeViewModel>();
-                CreateMap<PostBranchCollegeViewModel, BranchCollege>();
-                CreateMap<BranchCollege, PostBranchCollegeViewModel>()
-                .ForMember(dest => dest.CareersIds, m => m.MapFrom(source => source.CareerBranchColleges.Select(cbc => cbc.Career.Id.ToString())));
-             */
 
         }
     }
