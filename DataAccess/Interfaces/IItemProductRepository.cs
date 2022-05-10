@@ -10,6 +10,7 @@ namespace DataAccess.Interfaces
     public interface IItemProductRepository
     {
         Task<ItemProduct> Add(ItemProduct itemProduct);
-        Task<ItemProduct> GetByProductAndCartAsync(Guid productId, Guid cartId);
+        Task<ItemProduct?> GetByProductAndCartAsync(Guid productId, Guid cartId);
+        Task<ItemProduct?> Delete(ItemProduct itemProduct);
     }
 }

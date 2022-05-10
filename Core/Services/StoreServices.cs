@@ -12,49 +12,56 @@ namespace Core.Services
     {
         private readonly IStoreRepository _storeRepository;
         private readonly ILogger<StoreResponse> _logger;
-  
         private readonly IMapper _mapper;
 
-        public StoreServices(IStoreRepository storeRepository, ILogger<StoreResponse> logger, IMapper mapper)
+        public StoreServices(IStoreRepository storeRepository,IMapper mapper, ILogger<StoreResponse> logger)
         {
             _storeRepository = storeRepository;
-            _logger = logger;
             _mapper = mapper;
-        
+            _logger = logger;
         }
+        /// <summary>
+        /// Get all Store
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<StoreResponse>> GetAllAsync()
         {
-            _logger.Log(LogLevel.Information, "Esta obteniendo todos las entidades.");
+            _logger.Log(LogLevel.Information, "Gets Stores");
              var result = await _storeRepository.GetAllAsync();
-           
-             return _mapper.Map<List<StoreResponse>>(result);
-              
+            return _mapper.Map<IEnumerable<Store>, IEnumerable<StoreResponse>>(result);
+
         }
 
-        public  async Task<IEnumerable<StoreResponse>> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan  time)
+        /// <summary>
+        /// Gets store available in day of week and time
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<StoreResponse>> GetAllAvailable(DayOfWeek dayOfWeek, TimeSpan  time)
         {
             _logger.Log(LogLevel.Information, "");
             var listStores = await _storeRepository.GetAllWhitDailyTimeRange();
-            ICollection<StoreResponse> result = new List<StoreResponse>();
+            ICollection<Store> result = new List<Store>();
             foreach (var store in listStores)
             {
                 if (store.IsOpen(time, dayOfWeek))
-                    result.Add(new StoreResponse() { Name = store.Name, Address = store.Address , Id= store.Id });
+                    result.Add(store);
             };
-            return  result.ToList();
+            return _mapper.Map<IEnumerable<Store>, IEnumerable<StoreResponse>>(result);
         }
 
-     
 
-        public virtual async Task<StoreResponse> GetAsync(Guid Id)
+        /// <summary>
+        /// Gets one by Id store
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<StoreResponse> GetAsync(Guid Id)
         {
-            _logger.Log(LogLevel.Information, "Esta obteniendo todos las entidades.");
+            _logger.Log(LogLevel.Information, "Get Store by Id");
             var result = await _storeRepository.GetAsync(Id);
-            // var pp = _mapper.Map<StoreResponse>(new Store());
-            var pp = _mapper.ConfigurationProvider;
-
-            return _mapper.Map<StoreResponse>(result);
-
+            return _mapper.Map<Store,StoreResponse>(result);
         }
 
     }

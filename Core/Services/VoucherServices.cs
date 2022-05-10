@@ -1,7 +1,9 @@
-﻿using Core.Infrastructure;
+﻿using AutoMapper;
+using Core.Infrastructure;
 using Core.Interfaces;
 using DataAccess.Interfaces;
 using Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,16 @@ namespace Core.Services
         private readonly IVoucherRepository _voucherRepository;
         private readonly IProductRepository  _productRepository;
         private readonly IStoreRepository _storeRepository;
+        private readonly ILogger<Voucher> _logger;
+        private readonly IMapper _mapper;
 
-        public VoucherServices(IVoucherRepository voucherRepository, IProductRepository productRepository, IStoreRepository storeRepository)
+        public VoucherServices(IVoucherRepository voucherRepository, IProductRepository productRepository, IStoreRepository storeRepository, ILogger<Voucher> logger, IMapper mapper)
          {
             _voucherRepository = voucherRepository;
             _productRepository = productRepository;
             _storeRepository   = storeRepository;
+            _logger = logger;
+            _mapper = mapper;
           }
 
         public async Task<bool> ValidateByCode(string code, Guid storeId)

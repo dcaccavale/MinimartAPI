@@ -9,6 +9,6 @@ namespace DataAccess.Interfaces
 
         Task<T> GetAsync(Guid Id);
 
-        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
+        
     }
 }

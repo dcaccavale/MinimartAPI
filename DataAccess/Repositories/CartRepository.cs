@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 namespace DataAccess.Repositories
 {
     public  class CartRepository : GenericRepository, ICartRepository
@@ -19,10 +20,14 @@ namespace DataAccess.Repositories
         {
             return base.GetAllAsync<Cart>();
         }
-
-        public Task<Cart> GetAsync(Guid Id)
+        /// <summary>
+        /// Gets cart by Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Task<Cart?> GetAsync(Guid Id)
         {
-            return base.GetAsync<Cart>(Id);
+            return  _dataContext.Carts.Include(c=> c.Store).FirstOrDefaultAsync(c=> c.Id == Id) ;
         }
     }
 }

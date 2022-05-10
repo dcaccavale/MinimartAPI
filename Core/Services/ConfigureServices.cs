@@ -21,6 +21,9 @@ namespace Core.Services
             _logger = logger;
 
         }
+        /// <summary>
+        /// Delete all the data in the database and return to the initial state
+        /// </summary>
         public void initModel()
         {
             _configureRepository.initModel();   

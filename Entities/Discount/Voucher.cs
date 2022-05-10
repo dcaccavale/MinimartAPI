@@ -1,4 +1,5 @@
-﻿using Entities.Interfaces;
+﻿using Entities.Discount;
+using Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace Entities
     /// <summary>
     /// A promotional code is a code offered by stores to customers who can use it to receive a discounted price when buying products.
     /// </summary>
-    public class  Voucher :Entity
+    public abstract class  Voucher :Entity
     {
         /// <summary>
         /// Date range to apply a voucher
@@ -31,8 +32,8 @@ namespace Entities
         /// <summary>
         /// Date range to apply a voucher
         /// </summary>
-        [NotMapped] 
-        public IDiscount Discount { get; set; }
+      
+        public GenericDiscount Discount { get; set; }
         /// <summary>
         /// Store to apply voucher
         /// </summary>
@@ -44,19 +45,26 @@ namespace Entities
         /// <param name="date"></param>
         /// <returns></returns>
         /// 
+        protected abstract bool isApplyDiscount(Product product);
         public bool Validate(DateTime dateToValidate, Store storeToValidate) {
 
                  //Validate store
-            return storeToValidate.Id == Store.Id &&
+            return storeToValidate.Equals(Store) &&
                 //Validate date in range 
                 RangeDate.DateInRange(dateToValidate) &&
                 //dayOfWeek.Length == 0 applies every day of the week
                 (DaysOfWeek.Length == 0 || dateToValidate.DayOfWeek.ToString().Contains(DaysOfWeek));
       
         }
+        /// <summary>
+        ///  Calculate the discount to apply to a product
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="dateTimeToApply"></param>
+        /// <returns></returns>
         public double CalculateDiscount(ItemProduct product, DateTime dateTimeToApply )
         {
-            if (!Validate(dateTimeToApply, this.Store)) return 0;
+            if (!Validate(dateTimeToApply, this.Store) && this.isApplyDiscount(product.Product)) return 0;
             return this.Discount.CalculateDiscount(product);
 
         }
@@ -72,7 +80,10 @@ namespace Entities
         /// Products to apply 
         /// </summary>
         public IList<ProductDiscountToApply> ProductToApply { get; set; }
-        
+        protected override bool isApplyDiscount(Product product)
+        {
+            return ProductToApply != null && ProductToApply.Any(p => p.Product.Equals(product));
+        }
     }
     /// <summary>
     /// a voucher to apply for categories product
@@ -88,5 +99,12 @@ namespace Entities
         /// List of excepted products
         /// </summary>
         public IList<ExceptedDiscountProduct> ExceptedDiscountProduct { get; set; }
+
+        protected override bool isApplyDiscount(Product product)
+        {
+            return CategoriesToApply != null && CategoriesToApply.Any(p => p.Category.Equals(product.Category))
+                && ! ExceptedDiscountProduct.Any(p=> p.Product.Equals(product)) ;
+
+        }
     }
 }

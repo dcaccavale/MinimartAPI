@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace Entities.Discount
 {
-    public  class GenericDiscount :Entity 
+    public abstract  class GenericDiscount :Entity , IDiscount
     {
         /// <summary>
         /// maximum limit to apply discount, if the value 0 indicates unlimited
         /// </summary>
         public int Limit { get; set; }
+
+        public abstract double CalculateDiscount(ItemProduct addProductCart);
+
     }
 }

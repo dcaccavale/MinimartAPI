@@ -29,7 +29,7 @@ namespace Minimart_API.Controllers
         public Task<ItemProductResponse> Post([FromBody] ItemProductRequest itemProductRequest)
         {
 
-            return _cartServices.AddItemProduct(itemProductRequest.productId, itemProductRequest.cartId, itemProductRequest.Amound);
+            return _cartServices.AddItemProduct(itemProductRequest.productId, itemProductRequest.cartId, itemProductRequest.Quantity);
         
         }
 

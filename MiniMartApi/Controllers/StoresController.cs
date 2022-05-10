@@ -15,6 +15,7 @@ namespace Minimart_API.Controllers
     public class StoresController : ControllerBase
     {
         private readonly IStoreServices _storeServices;
+
         // GET: api/<StoresController>
         public StoresController(IStoreServices storeServices)
         {

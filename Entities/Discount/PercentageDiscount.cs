@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Discount
 {
-    public class PercentageDiscount : GenericDiscount, IDiscount
+    public class PercentageDiscount : GenericDiscount
     {
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Entities.Discount
         /// </summary>
         /// <param name="addProductCart"></param>
         /// <returns></returns>
-        public  double CalculateDiscount(ItemProduct addProductCart)
+        public override double CalculateDiscount(ItemProduct addProductCart)
         {
            return addProductCart.PriceUnit * this.getMaxquantityProducto(addProductCart.Quantity) * (Percentage /100)  ;
         }

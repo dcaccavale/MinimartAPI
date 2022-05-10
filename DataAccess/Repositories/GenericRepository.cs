@@ -20,42 +20,105 @@ namespace DataAccess.Repositories
 
            
         }
-      
-        public async Task<IEnumerable<T>> GetAllAsync<T>() where T : class
+      /// <summary>
+      /// Generic get all entities
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="predicate"></param>
+      /// <param name="orderBy"></param>
+      /// <param name="take"></param>
+      /// <param name="include"></param>
+      /// <returns></returns>
+        public async Task<IEnumerable<T>> GetAllAsync<T>(
+          Expression<Func<T, bool>> predicate = null,
+          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+          int? take = null,
+          Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null) where T : class
         {
-            
             var query = _dataContext.Set<T>().AsQueryable();
+            if (include != null)
+                query = include(query);
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            if (take.HasValue)
+                query = query.Take(Convert.ToInt32(take));
+
+
             return await query.ToListAsync();
-        }
+        }   
 
-        public async Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<T, bool>> predicate = null) where T : class
+        /// <summary>
+        /// Generic Get by Id
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Id"></param>
+        /// <param name="include"></param>
+        /// <returns></returns>
+        public async Task<T?> GetAsync<T>(Guid Id, Func<IQueryable<T>, 
+            IIncludableQueryable<T, object>> include = null) where T : Entity
         {
-
             var query = _dataContext.Set<T>().AsQueryable();
-            return await query.Where<T>(predicate).ToListAsync();
+             if (include != null )
+                query = include(query);
+            return await query.SingleOrDefaultAsync(s=> s.Id == Id);  
         }
 
-
-        public async Task<T?> GetAsync<T>(Guid Id) where T : Entity
+        /// <summary>
+        /// Generic First Or Default Async
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="predicate"></param>
+        /// <param name="include"></param>
+        /// <returns></returns>
+        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null) where T : Entity
         {
-            return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(s=> s.Id == Id);   
+            var query = _dataContext.Set<T>().AsQueryable();
+            if (include != null)
+                query = include(query);
+            return await query.FirstOrDefaultAsync(predicate);
         }
-        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null) where T : Entity
-        {
-            return await _dataContext.Set<T>().AsQueryable().FirstOrDefaultAsync(predicate);
-        }
-
-        public async Task<T> Add<T>(T entity) where T : Entity
+        /// <summary>
+        /// Generic Add Entity to Set
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<T?> Add<T>(T entity) where T : Entity
         {
             _dataContext.Set<T>().Add(entity);
-            return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(e=> e.Id == entity.Id);
+            await _dataContext.SaveChangesAsync();
+            return await GetAsync<T>(entity.Id);
         }
 
-        public async Task<T> Update<T>(T entity) where T : Entity
+        /// <summary>
+        /// Generic update entity 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<T?> Update<T>(T entity) where T : Entity
         {
             _dataContext.Set<T>().Update(entity);
-            return await _dataContext.Set<T>().AsQueryable().SingleOrDefaultAsync(e => e.Id == entity.Id);
+            await  _dataContext.SaveChangesAsync();
+            return await GetAsync<T?>(entity.Id);
         }
-
+        /// <summary>
+        /// Generic fisical Delete 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<T?> Delete<T>(T entity) where T : Entity
+        {
+            _dataContext.Set<T>().Remove(entity);
+             _dataContext.SaveChanges();
+            return await GetAsync<T>(entity.Id);
+        }
     }
 }

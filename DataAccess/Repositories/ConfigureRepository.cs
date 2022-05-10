@@ -12,7 +12,9 @@ namespace DataAccess.Repositories
         public ConfigureRepository(MinimarketDataContext dataContext) : base(dataContext)
         {
         }
-
+        /// <summary>
+        ///Initialize the database
+        /// </summary>
         public void initModel()
         {
             DbInitializer.InitDataBase(_dataContext);

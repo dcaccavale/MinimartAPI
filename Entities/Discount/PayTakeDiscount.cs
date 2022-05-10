@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Discount
 {
-    public class PayTakeDiscount : GenericDiscount, IDiscount
+    public class PayTakeDiscount : GenericDiscount
     {
  
         public int PayCount { get; set; }
@@ -26,7 +26,7 @@ namespace Entities.Discount
 
         }
 
-        public double CalculateDiscount(ItemProduct addProductCart)
+        public override double CalculateDiscount(ItemProduct addProductCart)
         {
             return addProductCart.Quantity > PayCount ?  addProductCart.PriceUnit * (TakeCount - PayCount)  * GetMaxquantityProducto(addProductCart.Quantity)  : 0;
 

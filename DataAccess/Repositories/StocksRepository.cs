@@ -15,36 +15,57 @@ namespace DataAccess.Repositories
         public StocksRepository(MinimarketDataContext dataContext) : base(dataContext) { }
 
 
-
-        public async Task<IEnumerable<StockProduct>> GetAllAvailableAsync()
+        /// <summary>
+        /// Gets available stock by store
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<StockProduct>?> GetAllAvailableAsync()
         {
-            return await _dataContext.StockProducts.Where(p => p.Quantity > 0).Include(p => p.Product.Category).ToListAsync();
+            return await base.GetAllAsync<StockProduct>(
+                p => p.Quantity > 0,null,null, P=> P.Include(p => p.Product.Category)
+                );
         }
-
+        /// <summary>
+        /// Gets all stock 
+        /// </summary>
+        /// <returns></returns>
         public Task<IEnumerable<StockProduct>> GetAllAsync()
         {
            return base.GetAllAsync<StockProduct>();
         }
 
-        public async Task<IEnumerable<StockProduct>> GetAllAvailableByStore(Guid storeId)
+        /// <summary>
+        /// Get available stock by store 
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<StockProduct>?> GetAllAvailableByStore(Guid storeId)
         {
-            return await _dataContext.StockProducts.Where(p => p.Store.Id == storeId && p.Quantity > 0).Include(p => p.Product.Category).ToListAsync();
-          
+            return await base.GetAllAsync<StockProduct>(
+          p => p.Store.Id == storeId && p.Quantity > 0, null, null, P => P.Include(p => p.Product.Category).Include(p=> p.Store)
+           );
+       }
+
+       
+        /// <summary>
+        /// Gets stock by store and product
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        public async Task<StockProduct?> GetByStoreAndProduct(Guid productID, Guid storeId)
+        {
+            return await base.FirstOrDefaultAsync<StockProduct>(
+               p => p.Product.Id == productID && p.Store.Id == storeId, p=> p.Include(p => p.Product.Category)
+                );
         }
 
-        public Task<StockProduct?> GetAsync(Guid Id)
-        {
-            return base.GetAsync<StockProduct>(Id);
-        }
-
-        public Task<StockProduct?> GetByStoreAndProduct(Guid productID, Guid storeId)
-        {
-            return _dataContext.StockProducts.Where(p => p.Product.Id == productID && p.Store.Id == storeId).Include(p => p.Product.Category).FirstOrDefaultAsync();
-
-        }
-
-
-        Task<StockProduct> IStockRepository.Update(StockProduct stock)
+        /// <summary>
+        /// Update stock producto
+        /// </summary>
+        /// <param name="stock"></param>
+        /// <returns></returns>
+        public Task<StockProduct?> Update(StockProduct stock)
         {
             return base.Update(stock);
         }

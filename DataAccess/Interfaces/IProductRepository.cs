@@ -4,6 +4,6 @@ namespace DataAccess.Interfaces
 {
     public interface IProductRepository
     {
-        Task<Product> GetAsync(Guid Id);
+        Task<Product?> GetAsync(Guid Id);
     }
 }

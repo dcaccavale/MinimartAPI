@@ -20,9 +20,9 @@ namespace DataAccess.Repositories
         {
             return  base.FirstOrDefaultAsync<Voucher>(v => v.Code == code && v.Store.Id == storeId);
         }
-        public Task<Voucher?> GetAsync(Guid Id)
+        public  Task<Voucher?> GetAsync(Guid Id)
         {
-            return _dataContext.Vouchers.Where(P => P.Id == Id).Include(p => p.Discount).Include(p => p.RangeDate).Include(p => p.Store).FirstOrDefaultAsync();
+            return  base.GetAsync<Voucher>(Id, p=>p.Include(p=> p.Discount).Include(p => p.RangeDate).Include(p => p.Store));
         }
 
     }

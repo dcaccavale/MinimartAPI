@@ -8,7 +8,12 @@ namespace DataAccess.Repositories
         public ProductRepository(MinimarketDataContext dataContext) : base(dataContext)
         {
         }
-        public Task<Product> GetAsync(Guid Id)
+        /// <summary>
+        /// Gets product by Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Task<Product?> GetAsync(Guid Id)
         {
             return base.GetAsync<Product>(Id);
         }

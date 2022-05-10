@@ -24,7 +24,7 @@ namespace Minimart_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<StocksResponse> GetAllAvailable()
+        public Task<IEnumerable<StocksResponse>> GetAllAvailable()
         {
             return _stockServices.GetAllAvailable();
         }
@@ -36,7 +36,7 @@ namespace Minimart_API.Controllers
         /// <param name="storeId"></param>
         /// <returns></returns>
         [HttpGet("{storedId,productId}")]
-        public StocksResponse GetByPrductAndStore(Guid productID , Guid storeId)
+        public Task<StocksResponse> GetByPrductAndStore(Guid productID , Guid storeId)
         {
             return _stockServices.GetByPrductAndStore(productID, storeId);
         }

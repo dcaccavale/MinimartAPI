@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Reflection;
 
 namespace Minimart_API
@@ -40,7 +41,7 @@ namespace Minimart_API
 
 
 
-            services.AddAutoMapper(typeof(DomainProfile));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddLogging();
             services.AddSwaggerGen(c =>
             {

@@ -4,7 +4,7 @@ namespace Core.Interfaces
 {
     public interface ICartServices
     {
-        Task<ItemProductResponse> AddItemProduct(Guid productId, Guid cartId, int Amound);
+        Task<ItemProductResponse> AddItemProduct(Guid productId, Guid cartId, int Quantity);
         Task<ItemProductResponse> DeleteItemProduct(Guid productId, Guid cartId);
 
     }

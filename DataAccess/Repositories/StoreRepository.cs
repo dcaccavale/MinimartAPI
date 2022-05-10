@@ -12,24 +12,19 @@ namespace DataAccess.Repositories
 
         }
 
-        public Task<IEnumerable<Store>> GetAllAsync()
+        public async Task<IEnumerable<Store>?> GetAllAsync()
         {
-            return  base.GetAllAsync<Store>();
+            return await base.GetAllAsync<Store>();
         }
 
-        public Task<IEnumerable<Store>> GetAllAsync(Expression<Func<Store, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Store>> GetAllWhitDailyTimeRange()
+        public async Task<IEnumerable<Store>?> GetAllWhitDailyTimeRange()
         {
             return await _dataContext.Stores.AsQueryable().Include(s=> s.DailyTimeRange).ToListAsync();
         }
 
-        public Task<Store> GetAsync(Guid Id)
+        public async Task<Store?> GetAsync(Guid Id)
         {
-            return base.GetAsync<Store>(Id);
+            return await base.GetAsync<Store>(Id, p=>p.Include(c=>c.DailyTimeRange) );
         }
     }
 }
